@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+
+<h:body style="background-color:#121212;">
+<h:head>
+	<h:form name="breadCrump">
+		<p:breadCrumb> 
+			<p:menuitem value="Home" url="index.xhtml"/>
+			<p:menuitem value="Clientes"/>
+		</p:breadCrumb>
+	</h:form>
+</h:head>
+	
+
+	<p:panel style="width:70%; margin: 20px auto;" id="panel"  header="Data">
+		<p:dataTable var="p" value="#{clienteMB.listClientes}" scrollable="true" allowUnsorting="true" sortMode="single"
+			scrollHeight="200">
+			<p:column sortBy="#{p.nome}" headerText="Nome">
+				<p:outputLabel value="#{p.nome}" />
+			</p:column>
+
+			<p:column sortBy="#{p.sobrenome}" headerText="sobrenome">
+				<p:outputLabel value="#{p.sobrenome}" />
+			</p:column>
+
+			<p:column sortBy="#{p.dataNasc}" headerText="Data Nascimento" width="140">
+				<p:outputLabel value="#{p.dataNasc}">
+					<f:convertDateTime pattern="dd/MM/yyyy" />
+				</p:outputLabel>
+			</p:column> 
+
+			<p:column width="80">
+				<h:form>
+					<p:commandButton icon="pi pi-pencil"
+						action="#{clienteMB.edit(p.id)}" update="panelCad" />
+				</h:form>
+			</p:column>
+		</p:dataTable>
+	</p:panel>
+
+	<p:panel id="panelCad" header="Cadastro" style="margin: 20px auto; width:40%;">
+		<h:form>
+			<p:messages id="msgs" closable="true"/>
+		
+			<h:inputHidden value="#{clienteMB.cli.id}" />
+
+			<p:growl id="growl" sticky="false" showDetail="false" />
+			<h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
+
+				<h:outputText value="Nome: " />
+				<p:inputText value="#{clienteMB.cli.nome}" required="true" label="Nome" validatorMessage="Deu merda!">
+					<f:validateLength minimum="2"/>
+				</p:inputText>
+
+				<h:outputText value="Sobrenome: " />
+				<p:inputText value="#{clienteMB.cli.sobrenome}" required="true">
+					<f:validateLength minimum="5"/>
+				</p:inputText>
+
+
+				<h:outputLabel for="dataNasc" value="Data Nascimento:" />
+				<p:datePicker id="dataNasc" value="#{clienteMB.cli.dataNasc}"
+					showIcon="true" /> 
+
+				<p:commandButton value="Salvar" icon="ui-icon-disk" update="panel panelCad"
+					action="#{clienteMB.save}" style="margin-right:20px;" />
+
+			</h:panelGrid>
+		</h:form>
+	</p:panel>
+
+</h:body>
+</html>

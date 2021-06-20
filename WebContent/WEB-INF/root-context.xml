@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans     
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context 
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
+	
+	<context:component-scan base-package="portaledu"/>
+    <context:annotation-config/>
+    <context:spring-configured/>
+	
+	<tx:annotation-driven transaction-manager="transactionManager"/>
+     
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="org.postgresql.Driver" />
+        <property name="url" value="jdbc:postgresql://localhost:5432/spring"/>
+        <property name="username" value="postgres" />
+        <property name="password" value="postgres"/>
+         
+    </bean>
+     
+    <bean id="SessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean" >
+        <property name="dataSource" ref="dataSource"/>
+       	<!--
+        <property name="configLocation">
+            <value>/META-INF/hibernate.cfg.xml</value> 
+        </property> -->
+        <property name="packagesToScan">
+            <list>
+                <value>portaledu.model</value>
+            </list>
+        </property>
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</prop>
+                <prop key="hibernate.show_sql">true</prop>
+                <prop key="hibernate.format_sql">true</prop>
+            </props>
+        </property>       
+    </bean>
+    
+    <tx:annotation-driven />
+    <bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+        <property name="sessionFactory" ref="SessionFactory" />
+    </bean>
+ 
+    <bean id="persistenceExceptionTranslationPostProcessor"
+        class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor"/>
+		
+</beans>
