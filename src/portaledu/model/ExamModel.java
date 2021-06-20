@@ -28,7 +28,7 @@ import portaledu.utils.StatusEnum;
 public class ExamModel {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.AUTO, generator = "seq_pk_idexams")
 	private Long id;
 	
 	@ManyToMany(fetch = FetchType.EAGER)
@@ -57,7 +57,6 @@ public class ExamModel {
 		
 	}
 	
-	
 	public ExamModel(Long id, List<ProfessorModel> professor, StudentModel student, Date date, String subject,
 			Double result, StatusEnum status) {
 		this.id = id;
@@ -74,71 +73,57 @@ public class ExamModel {
 		return id;
 	}
 
-
 	public void setId(Long id) {
 		this.id = id;
 	}
-
 
 	public List<ProfessorModel> getProfessor() {
 		return professor;
 	}
 
-
 	public void setProfessor(List<ProfessorModel> professor) {
 		this.professor = professor;
 	}
-
 
 	public StudentModel getStudent() {
 		return student;
 	}
 
-
 	public void setStudent(StudentModel student) {
 		this.student = student;
 	}
-
 
 	public Date getDate() {
 		return date;
 	}
 
-
 	public void setDate(Date date) {
 		this.date = date;
 	}
-
 
 	public String getSubject() {
 		return subject;
 	}
 
-
 	public void setSubject(String subject) {
 		this.subject = subject;
 	}
-
 
 	public Double getResult() {
 		return result;
 	}
 
-
 	public void setResult(Double result) {
 		this.result = result;
 	}
-
 
 	public StatusEnum getStatus() {
 		return status;
 	}
 
-
 	public void setStatus(StatusEnum status) {
 		this.status = status;
 	}
-
 
 	@Override
 	public int hashCode() {
@@ -147,22 +132,5 @@ public class ExamModel {
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		return result;
 	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		ExamModel other = (ExamModel) obj;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		return true;
-	}	
-
+	
 }

@@ -2,8 +2,6 @@ package portaledu.DAO;
 
 import java.util.List;
 
-
-
 public interface GenericDAO<T> {
 	
 	List<T> getAll(Class<T> cla) throws Exception;

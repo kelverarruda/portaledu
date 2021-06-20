@@ -4,7 +4,7 @@
   
   	<context-param>
    		<param-name>primefaces.THEME</param-name>
-   		<param-value>vela</param-value>
+   		<param-value>saga</param-value>
  	</context-param>
 	
 	<servlet>
@@ -43,6 +43,11 @@
   		<location>/system/errors/file-not-found.xhtml</location>
   	</error-page>
   	
+ 	<context-param>
+  		<param-name>javax.faces.WEBAPP_RESOURCES_DIRECTORY</param-name>
+  		<param-value>/WEB-INF/resources</param-value>
+	</context-param>
+  	
   	
 	<!-- Creates the Spring Container shared by all Servlets and Filters -->
 	<listener>
@@ -53,7 +58,7 @@
 		<listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
 	</listener>
 	
-	<!--  configuração para o filtro de login -->
+	<!--  configuração para o filtro de login 
 	<filter>
 	    <filter-name>LoginFilter</filter-name>
 	    <filter-class>unoesc.edu.aulaJSP.filter.AuthorizationFilter</filter-class>    
@@ -64,15 +69,7 @@
 	    <url-pattern>/*</url-pattern>
 	</filter-mapping>
 	
- 	<context-param>
-  		<param-name>javax.faces.WEBAPP_RESOURCES_DIRECTORY</param-name>
-  		<param-value>/WEB-INF/resources</param-value>
-	</context-param>
-	
-	<context-param>
-  		<param-name>javax.faces.FACELETS_SKIP_COMMENTS</param-name>
-  		<param-value>true</param-value>
-  	</context-param>
+	-->
   	
   	<context-param>
   		<param-name>javax.faces.FACELETS_REFRESH_PERIOD</param-name>
@@ -80,13 +77,10 @@
   	</context-param>
    
     <!-- The definition of the Root Spring Container shared by all Servlets	and Filters -->
-    <!-- 
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>/WEB-INF/root-context.xml</param-value>
 	</context-param>
-	
-	 -->
 	
 	<context-param>
 		<param-name>javax.faces.CONFIG_FILES</param-name>

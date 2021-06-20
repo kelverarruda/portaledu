@@ -8,8 +8,10 @@
     <application>
         <el-resolver>org.springframework.web.jsf.el.SpringBeanFacesELResolver</el-resolver>
     </application>
+    
     <validator>
-		<validator-id>unoesc.edu.aulaJSP.validators.EmailValidator</validator-id>
-		<validator-class>unoesc.edu.aulaJSP.validators.EmailValidator</validator-class>
+		<validator-id>portaledu.validators.EmailValidator</validator-id>
+		<validator-class>portaledu.validators.EmailValidator</validator-class>
 	</validator>
+	
 </faces-config>

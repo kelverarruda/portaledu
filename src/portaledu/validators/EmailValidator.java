@@ -1,4 +1,4 @@
-package unoesc.edu.aulaJSP.validators;
+package portaledu.validators;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

@@ -27,10 +27,12 @@
      
     <bean id="SessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean" >
         <property name="dataSource" ref="dataSource"/>
+       	
        	<!--
         <property name="configLocation">
             <value>/META-INF/hibernate.cfg.xml</value> 
         </property> -->
+        
         <property name="packagesToScan">
             <list>
                 <value>portaledu.model</value>
@@ -41,6 +43,7 @@
                 <prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</prop>
                 <prop key="hibernate.show_sql">true</prop>
                 <prop key="hibernate.format_sql">true</prop>
+                <prop key="hibernate.hbm2ddl.auto">update</prop>
             </props>
         </property>       
     </bean>

@@ -1,4 +1,4 @@
-package unoesc.edu.aulaJSP.filter;
+package portaledu.filter;
 
 import java.io.IOException;
 import javax.servlet.Filter;
@@ -11,9 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import unoesc.edu.aulaJSP.model.Usuario;
-
-
+import portaledu.model.UserModel;
 
 public class AuthorizationFilter implements Filter {
 
@@ -28,11 +26,11 @@ public class AuthorizationFilter implements Filter {
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
-		Usuario user = null;
+		UserModel user = null;
 		HttpSession sess = ((HttpServletRequest) request).getSession(false);
 
 		if (sess != null) {
-			user = (Usuario) sess.getAttribute("usuarioLogado");
+			user = (UserModel) sess.getAttribute("usuarioLogado");
 		}
 
 		HttpServletRequest rqt = (HttpServletRequest) request;

@@ -9,15 +9,17 @@ public class SessionContext {
 	
 	private static SessionContext instance;
 	
-	static {
+	public static SessionContext getInstance() {
 		try {
 			if (instance == null) {
 				instance = new SessionContext();
 			}
 		} catch (Exception e) {
 			System.out.println(e.toString());
-		}		
-	}
+		}
+		
+		return instance;
+	}	
 	
 	private ExternalContext currentExternalContext() {
 		if (FacesContext.getCurrentInstance() == null) {
@@ -26,10 +28,6 @@ public class SessionContext {
 		else {
 			return FacesContext.getCurrentInstance().getExternalContext();
 		}
-	}
-	
-	public SessionContext getInstance() {
-		return instance;
 	}
 	
 	public UserModel getUserLogged() {

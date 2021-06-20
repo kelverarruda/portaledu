@@ -30,7 +30,7 @@ public class UserController {
     }
     
 	public List<UserModel> getList() throws Exception {
-		list = DAO.getAll(UserModel.class);
+		list = DAO.getAll();
 		return list;
 	}
 	

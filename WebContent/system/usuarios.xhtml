@@ -46,8 +46,7 @@
 	<p:panel id="panelCad" header="Cadastro"
 		style="margin: 20px auto; width:40%;">
 		<h:form>
-			<h:inputHidden value="#{usuarioMB.usuario.id}" />
-			<h:inputHidden value="#{usuarioMB.usuario.imagem}" />
+			<h:inputHidden value="#{loginBean.user.id}" />
 
 			<p:growl id="growl" sticky="false" showDetail="false" />
 
@@ -55,26 +54,26 @@
 			<h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
 
 				<h:outputText value="Nome: " />
-				<p:inputText value="#{usuarioMB.usuario.nome}" required="true"
+				<p:inputText value="#{loginBean.user.fullname}" required="true"
 					label="Nome">
 					<f:validateLength minimum="5" maximum="20" />
 				</p:inputText>
 
 				<h:outputText value="Email: " />
-				<p:inputText required="true" value="#{usuarioMB.usuario.email}">
+				<p:inputText required="true" value="#{loginBean.user.email}">
 					<f:validator
 						validatorId="unoesc.edu.aulaJSP.validators.EmailValidator" />
 				</p:inputText>
 
 				<h:outputText value="login: " />
-				<p:inputText required="true" value="#{usuarioMB.usuario.login}" />
+				<p:inputText required="true" value="#{loginBean.user.username}" />
 
 				<h:outputText value="Senha: " />
-				<p:password required="true" value="#{usuarioMB.usuario.senha}" />
-				
-				
+				<p:password required="true" value="#{loginBean.user.password}" />
+
+	
 				<p:commandButton value="Salvar" update="panel panelCad"
-					action="#{usuarioMB.save}" style="margin-right:20px; margin-up:20px;" />
+					action="#{loginBean.doRegister}" style="margin-right:20px; margin-up:20px;" />
 
 			</h:panelGrid>
 		</h:form>

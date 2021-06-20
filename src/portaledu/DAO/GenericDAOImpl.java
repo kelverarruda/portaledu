@@ -18,9 +18,8 @@ public class GenericDAOImpl<T> implements GenericDAO<T>{
 	@Autowired
 	SessionFactory sessionFactory;
 	
-	protected void addMessage(FacesMessage.Severity severity, String summary, String detail) {
-        FacesContext.getCurrentInstance().
-                addMessage(null, new FacesMessage(severity, summary, detail));
+	public void addMessage(FacesMessage.Severity severity, String summary, String detail) {
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(severity, summary, detail));
     }
 	
 	@Override
