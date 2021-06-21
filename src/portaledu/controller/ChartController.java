@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
 
 import org.primefaces.model.charts.ChartData;
@@ -19,14 +20,10 @@ import org.primefaces.model.charts.optionconfig.legend.Legend;
 import org.primefaces.model.charts.optionconfig.legend.LegendLabel;
 import org.primefaces.model.charts.optionconfig.title.Title;
 
-import portaledu.DAO.ExamDAOImpl;
-import portaledu.DAO.ProfessorDAOImpl;
-import portaledu.DAO.StudentDAOImpl;
-import portaledu.DAO.UserDAOImpl;
-import portaledu.model.ExamModel;
-import portaledu.model.ProfessorModel;
-import portaledu.model.StudentModel;
-import portaledu.model.UserModel;
+import portaledu.DAO.ExamDAO;
+import portaledu.DAO.ProfessorDAO;
+import portaledu.DAO.StudentDAO;
+import portaledu.DAO.UserDAO;
 
 @RequestScoped
 @ManagedBean(name = "chartBean")
@@ -37,12 +34,18 @@ public class ChartController {
 	private BarChartModel barProfessor;
 	private BarChartModel barExam;
 	
-	private ExamDAOImpl eDAO;
-	private StudentDAOImpl sDAO;
-	private ProfessorDAOImpl pDAO;
-	private UserDAOImpl uDAO;
+	@ManagedProperty(value="#{ExamDAO}")
+	private ExamDAO eDAO;
 	
-
+	@ManagedProperty(value="#{StudentDAO}")
+	private StudentDAO sDAO;
+	
+	@ManagedProperty(value="#{ProfessorDAO}")
+	private ProfessorDAO pDAO;
+	
+	@ManagedProperty(value="#{UserDAO}")
+	private UserDAO uDAO;
+	
     @PostConstruct
     public void init() throws Exception {
     	createBarUser();
@@ -85,7 +88,6 @@ public class ChartController {
 
 	public void createBarUser() throws Exception {
 		
-		uDAO = new UserDAOImpl();
 		barUser = new BarChartModel();
         ChartData data = new ChartData();
         
@@ -93,10 +95,10 @@ public class ChartController {
         barDataSet.setLabel("Usuários");
 
         List<Number> values = new ArrayList<>();
-        values.add(uDAO.getAll(UserModel.class).size());
-        values.add(uDAO.getInactive(UserModel.class).size());
-        values.add(uDAO.getActive(UserModel.class).size());
-        values.add(uDAO.getBlocked(UserModel.class).size());
+        values.add(uDAO.getAll().size());
+        values.add(uDAO.getInactive().size());
+        values.add(uDAO.getActive().size());
+        values.add(uDAO.getBlocked().size());
         
         barDataSet.setData(values);
 
@@ -162,7 +164,6 @@ public class ChartController {
 	
 	public void createBarStudent() throws Exception {
 		
-		sDAO = new StudentDAOImpl();
 		barStudent = new BarChartModel();
         ChartData data = new ChartData();
         
@@ -170,9 +171,9 @@ public class ChartController {
         barDataSet.setLabel("Alunos");
 
         List<Number> values = new ArrayList<>();
-        values.add(sDAO.getAll(StudentModel.class).size());
-        values.add(sDAO.getInactive(StudentModel.class).size());
-        values.add(sDAO.getActive(StudentModel.class).size());
+        values.add(sDAO.getAll().size());
+        values.add(sDAO.getInactive().size());
+        values.add(sDAO.getActive().size());
         
         barDataSet.setData(values);
 
@@ -235,7 +236,6 @@ public class ChartController {
 	
 	public void createBarProfessor() throws Exception {
 		
-		pDAO = new ProfessorDAOImpl();
 		barProfessor = new BarChartModel();
         ChartData data = new ChartData();
         
@@ -243,9 +243,9 @@ public class ChartController {
         barDataSet.setLabel("Professores");
 
         List<Number> values = new ArrayList<>();
-        values.add(pDAO.getAll(ProfessorModel.class).size());
-        values.add(pDAO.getInactive(ProfessorModel.class).size());
-        values.add(pDAO.getActive(ProfessorModel.class).size());
+        values.add(pDAO.getAll().size());
+        values.add(pDAO.getInactive().size());
+        values.add(pDAO.getActive().size());
         
         barDataSet.setData(values);
 
@@ -308,7 +308,6 @@ public class ChartController {
 	
 	public void createBarExam() throws Exception {
 		
-		eDAO = new ExamDAOImpl();
 		barExam = new BarChartModel();
         ChartData data = new ChartData();
         
@@ -316,9 +315,9 @@ public class ChartController {
         barDataSet.setLabel("Provas");
 
         List<Number> values = new ArrayList<>();
-        values.add(eDAO.getAll(ExamModel.class).size());
-        values.add(eDAO.getInactive(ExamModel.class).size());
-        values.add(eDAO.getActive(ExamModel.class).size());
+        values.add(eDAO.getAll().size());
+        values.add(eDAO.getInactive().size());
+        values.add(eDAO.getActive().size());
         
         barDataSet.setData(values);
 

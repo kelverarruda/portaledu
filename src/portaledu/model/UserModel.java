@@ -45,17 +45,6 @@ public class UserModel {
 		
 	}
 
-	public UserModel(Integer id, String fullname, String email, String username, String password, UserTypeEnum usertype,
-			StatusEnum status) {
-		this.id = id;
-		this.fullname = fullname;
-		this.email = email;
-		this.username = username;
-		this.password = password;
-		this.usertype = usertype;
-		this.status = status;
-	}
-
 	public Integer getId() {
 		return id;
 	}

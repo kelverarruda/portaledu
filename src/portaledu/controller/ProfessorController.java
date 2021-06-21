@@ -1,19 +1,41 @@
 package portaledu.controller;
 
-import javax.faces.bean.ManagedBean;
-import javax.faces.view.ViewScoped;
+import java.util.List;
 
-import portaledu.DAO.ExamDAOImpl;
-import portaledu.DAO.ProfessorDAOImpl;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.RequestScoped;
+
+import portaledu.DAO.ProfessorDAO;
 import portaledu.model.ProfessorModel;
 
-@ViewScoped
+@RequestScoped
 @ManagedBean(name = "professorBean")
 public class ProfessorController {
 	
-	private ProfessorDAOImpl DAO = new ProfessorDAOImpl();
-	private ExamDAOImpl exam;
-	private ProfessorModel prof;
+	@ManagedProperty(value = "#{ProfessorDAO}")
+	private ProfessorDAO professorDao;
+	private List<ProfessorModel> professors = null;
+	
+	public ProfessorDAO getProfessorDao() {
+		return professorDao;
+	}
+	
+	public void setProfessorDao(ProfessorDAO professorDao) {
+		this.professorDao = professorDao;
+	}
+	
+	public List<ProfessorModel> getProfessors() {
+		if (professors == null) {
+			professors = professorDao.getAll();
+		}
+		return professors;
+	}
+	
+	public void setProfessors(List<ProfessorModel> professors) {
+		this.professors = professors;
+	}
+	
 	
 	
 }

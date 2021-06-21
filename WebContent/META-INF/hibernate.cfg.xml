@@ -5,6 +5,7 @@
  
 <hibernate-configuration>
     <session-factory>
+        <mapping class="portaledu.model.UserModel"></mapping>
         <mapping class="portaledu.model.ClassModel"></mapping>
         <mapping class="portaledu.model.ExamModel"></mapping>
         <mapping class="portaledu.model.ProfessorModel"></mapping>

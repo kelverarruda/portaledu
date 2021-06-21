@@ -22,7 +22,7 @@
 
 <h:body class="text-center">
 
-  	<h:form class="form-signin" id="login">
+  	<h:form class="form-signin" id="register">
   	
   		<p:growl id="growl" showDetail="true" />
   		
@@ -51,13 +51,12 @@
     	</div>
     	
     	<div class="form-floating mt-1">
-    		<p:selectOneMenu id="usertype" value="#{loginBean.user.usertype}" style="width:100%">
-                <f:selectItem itemLabel="Aluno" itemValue="UserTypeEnum.STUDENT"/>
-            	<f:selectItem itemLabel="Professor" itemValue="UserTypeEnum.PROF"/>
+    		<p:selectOneMenu id="usertype" value="#{loginBean.user.usertype}" style="width:100%" effect="fade" filter="true" filterMatchMode="startsWith" >
+                <f:selectItems var="type" value="#{loginBean.userTypes}" itemLabel="#{type.label}" itemValue="#{type}" itemDisabled="#{type.label eq 'Administrador'}" />
             </p:selectOneMenu>
     	</div>
     	    
-    	<h:commandButton class="w-100 btn btn-lg btn-primary mt-4" action="#{loginBean.doRegister}" value="Cadastrar" />
+    	<p:commandButton class="w-100 btn btn-lg btn-primary mt-4" type="submit" action="#{loginBean.doRegister}" value="Cadastrar" />
     	
     	<p class="mt-3 mb-1 text-light">Já possui cadastro?</p>
     	<h:commandButton class="w-100 mb-5 btn btn-lg btn-link" value="Início" action="login?faces-redirect=true" />

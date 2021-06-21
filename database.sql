@@ -14,3 +14,8 @@ CREATE TABLE public.users
 
 ALTER TABLE public.users
     OWNER to postgres;
+
+
+    INSERT INTO public.users(
+	id, email, fullname, password, status, username, usertype)
+	VALUES (1, 'arrudakelver@gmail.com', 'Kelver Arruda', encode(SHA256('admin'), 'hex'), 'ACTIVE', 'admin', 'ADMIN');

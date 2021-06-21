@@ -8,7 +8,7 @@ public enum UserTypeEnum {
 	
 	private String label;
 
-    UserTypeEnum(String label) {
+	UserTypeEnum(String label) {
         this.label = label;
     }
 

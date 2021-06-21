@@ -8,16 +8,17 @@ import javax.faces.context.FacesContext;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import portaledu.model.UserModel;
 import portaledu.utils.StatusEnum;
 
-
+@Service(value = "UserDAO")
 public class UserDAOImpl implements UserDAO {
 	
 	@Autowired
-	SessionFactory sessionFactory;
+	private SessionFactory sessionFactory;
 	
 	public void addMessage(FacesMessage.Severity severity, String summary, String detail) {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(severity, summary, detail));
@@ -26,45 +27,50 @@ public class UserDAOImpl implements UserDAO {
 	@Override
 	@Transactional
 	public List<UserModel> getAll() {
-		return (List<UserModel>) sessionFactory.getCurrentSession().createQuery("FROM UserModel").getResultList();
+		return (List<UserModel>) this.sessionFactory.getCurrentSession().createQuery("FROM UserModel").getResultList();
 	}
 
 	@Override
 	@Transactional
 	public List<UserModel> getActive() {
-		return (List<UserModel>) sessionFactory.getCurrentSession().createQuery("FROM UserModel WHERE status = 'ACTIVE' ").getResultList();
+		return (List<UserModel>) this.sessionFactory.getCurrentSession().createQuery("FROM UserModel WHERE status = 'ACTIVE' ").getResultList();
 	}
 
 	@Override
 	@Transactional
 	public List<UserModel> getInactive() {
-		return (List<UserModel>) sessionFactory.getCurrentSession().createQuery("FROM UserModel WHERE status = 'INACTIVE' ").getResultList();
+		return (List<UserModel>) this.sessionFactory.getCurrentSession().createQuery("FROM UserModel WHERE status = 'INACTIVE' ").getResultList();
 	}
 	
 	@Override
 	@Transactional
 	public List<UserModel> getBlocked(){
-		return (List<UserModel>) sessionFactory.getCurrentSession().createQuery("FROM UserModel WHERE status = 'BLOCKED' ").getResultList();
+		return (List<UserModel>) this.sessionFactory.getCurrentSession().createQuery("FROM UserModel WHERE status = 'BLOCKED' ").getResultList();
 	}
 
 	@Override
 	@Transactional
 	public UserModel getById(int id) {
-		return (UserModel) sessionFactory.getCurrentSession().get(UserModel.class, new Integer(id));
+		return (UserModel) this.sessionFactory.getCurrentSession().get(UserModel.class, new Integer(id));
 	}
 
 	@Override
 	@Transactional
 	public boolean insert(UserModel obj) {
-		sessionFactory.getCurrentSession().save(obj);
-		return true;
+		if (obj != null) {
+			this.sessionFactory.getCurrentSession().save(obj);
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 
 	@Override
 	@Transactional
 	public boolean update(UserModel obj) {
 		try {
-			sessionFactory.getCurrentSession().update(obj);
+			this.sessionFactory.getCurrentSession().update(obj);
 			return true;			
 		} catch (Exception e) {
 			System.out.println(e.toString());
@@ -77,11 +83,12 @@ public class UserDAOImpl implements UserDAO {
 	@Transactional
 	public boolean delete(UserModel obj) {
 		try {
-			sessionFactory.getCurrentSession().delete(obj);
+			this.sessionFactory.getCurrentSession().delete(obj);
 			return true;
 		} catch (Exception e) {
 			System.out.println(e.toString());
 		}
+		
 		return false;
 	}
 
@@ -116,16 +123,13 @@ public class UserDAOImpl implements UserDAO {
 	}
 
 	@Override
+	@Transactional
 	public boolean registerLogin(UserModel obj) {
-		try {
+		if (obj.getId() == null) {
 			insert(obj);
-			addMessage(FacesMessage.SEVERITY_INFO, "Sucesso!", "Seu usuário será liberado por um administrador do sistema. Obrigado!");
 			return true;
-		} catch (Exception e) {
-			System.out.println(e.toString());
-		}
+		} 			
 		
-		addMessage(FacesMessage.SEVERITY_ERROR, "Erro!", "Erro cadastrar usuário.");
 		return false;
 	}
 		

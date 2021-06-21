@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 
@@ -12,7 +13,7 @@ import org.primefaces.PrimeFaces;
 import portaledu.DAO.UserDAOImpl;
 import portaledu.model.UserModel;
 
-@ViewScoped
+@RequestScoped
 @ManagedBean(name = "userBean")
 public class UserController {
 		
@@ -29,7 +30,7 @@ public class UserController {
         this.selectedUser = user;
     }
     
-	public List<UserModel> getList() throws Exception {
+	public List<UserModel> getList() {
 		list = DAO.getAll();
 		return list;
 	}
@@ -50,7 +51,7 @@ public class UserController {
         this.selectedUser = new UserModel();
     }
 
-    public void saveUser() throws Exception {
+    public void saveUser() {
     	if (this.selectedUser.getId() == null) {
     		DAO.insert(this.selectedUser);
     		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Usuário cadastrado!"));
@@ -63,7 +64,7 @@ public class UserController {
         PrimeFaces.current().ajax().update("form:messages", "form:dt-users");
     }
 
-    public void deleteUser() throws Exception {
+    public void deleteUser() {
     	DAO.delete(this.selectedUser);
         this.selectedUser = null;
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Usuário excluído!"));

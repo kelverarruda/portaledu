@@ -9,17 +9,17 @@ public class SessionContext {
 	
 	private static SessionContext instance;
 	
+	private SessionContext() {
+		
+	}
+	
 	public static SessionContext getInstance() {
-		try {
-			if (instance == null) {
-				instance = new SessionContext();
-			}
-		} catch (Exception e) {
-			System.out.println(e.toString());
+		if (instance == null) {
+			instance = new SessionContext();
 		}
 		
 		return instance;
-	}	
+	}
 	
 	private ExternalContext currentExternalContext() {
 		if (FacesContext.getCurrentInstance() == null) {
@@ -38,7 +38,7 @@ public class SessionContext {
 		setAttribute("userLogged", user);
 	}
 	
-	public void closeSession( ) {
+	public void closeSession() {
 		currentExternalContext().invalidateSession();
 	}
 	

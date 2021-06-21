@@ -6,6 +6,26 @@
    		<param-name>primefaces.THEME</param-name>
    		<param-value>saga</param-value>
  	</context-param>
+ 	
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>/WEB-INF/root-context.xml</param-value>
+	</context-param>
+ 	
+	<!-- Creates the Spring Container shared by all Servlets and Filters -->
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+
+	<listener>
+		<listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
+	</listener>
+	
+	<!-- The definition of the Root Spring Container shared by all Servlets	and Filters -->
+	<context-param>
+		<param-name>javax.faces.CONFIG_FILES</param-name>
+		<param-value>/WEB-INF/faces-config.xml</param-value>
+	</context-param>
 	
 	<servlet>
 		<servlet-name>Faces Servlet</servlet-name>
@@ -13,15 +33,16 @@
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 	
+ 	<context-param>
+  		<param-name>javax.faces.WEBAPP_RESOURCES_DIRECTORY</param-name>
+  		<param-value>/WEB-INF/resources</param-value>
+	</context-param>
+	
 	<servlet-mapping>
    		<servlet-name>Faces Servlet</servlet-name>
    		<url-pattern>*.jsf</url-pattern>
    		<url-pattern>*.xhtml</url-pattern>
  	</servlet-mapping>
- 	
- 	<welcome-file-list>
-		<welcome-file>system/login.xhtml</welcome-file>
-	</welcome-file-list>
 	
 	<error-page>
   		<error-code>403</error-code>
@@ -43,48 +64,27 @@
   		<location>/system/errors/file-not-found.xhtml</location>
   	</error-page>
   	
- 	<context-param>
-  		<param-name>javax.faces.WEBAPP_RESOURCES_DIRECTORY</param-name>
-  		<param-value>/WEB-INF/resources</param-value>
-	</context-param>
-  	
-  	
-	<!-- Creates the Spring Container shared by all Servlets and Filters -->
-	<listener>
-		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-	</listener>
+ 	<welcome-file-list>
+		<welcome-file>system/login.xhtml</welcome-file>
+		<welcome-file>login.xhtml</welcome-file>
+		<welcome-file>index.xhtml</welcome-file>
+	</welcome-file-list>
 
-	<listener>
-		<listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
-	</listener>
 	
-	<!--  configuração para o filtro de login 
+	<!--  configuração para o filtro de login -->
 	<filter>
 	    <filter-name>LoginFilter</filter-name>
-	    <filter-class>unoesc.edu.aulaJSP.filter.AuthorizationFilter</filter-class>    
+	    <filter-class>portaledu.filter.AuthorizationFilter</filter-class>    
 	</filter>
 	
 	<filter-mapping>
 	    <filter-name>LoginFilter</filter-name>
-	    <url-pattern>/*</url-pattern>
+	    <url-pattern>/system/classes.xhtml</url-pattern>
+	    <url-pattern>/system/exams.xhtml</url-pattern>
+	    <url-pattern>/system/index.xhtml</url-pattern>
+	    <url-pattern>/system/professors.xhtml</url-pattern>
+	    <url-pattern>/system/students.xhtml</url-pattern>
+	    <url-pattern>/system/users.xhtml</url-pattern>
 	</filter-mapping>
-	
-	-->
-  	
-  	<context-param>
-  		<param-name>javax.faces.FACELETS_REFRESH_PERIOD</param-name>
-  		<param-value>0</param-value>
-  	</context-param>
-   
-    <!-- The definition of the Root Spring Container shared by all Servlets	and Filters -->
-	<context-param>
-		<param-name>contextConfigLocation</param-name>
-		<param-value>/WEB-INF/root-context.xml</param-value>
-	</context-param>
-	
-	<context-param>
-		<param-name>javax.faces.CONFIG_FILES</param-name>
-		<param-value>/WEB-INF/faces-config.xml</param-value>
-	</context-param>
 	
 </web-app>

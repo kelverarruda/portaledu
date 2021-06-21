@@ -1,17 +1,28 @@
 package portaledu.controller;
 
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
+import java.util.List;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
+
+import org.hibernate.usertype.UserType;
+import org.primefaces.PrimeFaces;
+import org.springframework.dao.support.DaoSupport;
 
 import portaledu.DAO.UserDAO;
+import portaledu.DAO.UserDAOImpl;
 import portaledu.model.UserModel;
+import portaledu.service.UserService;
 import portaledu.utils.SessionContext;
+import portaledu.utils.StatusEnum;
 import portaledu.utils.UserTypeEnum;
 
 @RequestScoped
@@ -20,11 +31,24 @@ public class LoginController {
 	
 	private UserModel user = new UserModel();
 	
-	@ManagedProperty(value="#{GenericDAO}")
+	@ManagedProperty(value="#{UserDAO}")
 	private UserDAO userDao;
 	
 	private boolean isLogged = false;
 	private boolean isRoot = false;
+	
+	public LoginController() {
+		UserModel user = (UserModel) SessionContext.getInstance().getAttribute("userLogged");
+			if (user != null) {
+				isLogged = true;
+				if (user.getUsertype() == UserTypeEnum.ADMIN) {
+					isRoot = true;
+				}
+				else {
+					isRoot = false;
+				}
+			}
+		}
 	
 	public UserModel getUser() {
 		return user;
@@ -41,7 +65,7 @@ public class LoginController {
 	public void setUserDao(UserDAO userDao) {
 		this.userDao = userDao;
 	}
-		
+	
 	public boolean isLogged() {
 		return isLogged;
 	}
@@ -57,12 +81,12 @@ public class LoginController {
 	public void setRoot(boolean isRoot) {
 		this.isRoot = isRoot;
 	}
-	
+
 	public UserTypeEnum[] getUserTypes() {
 		return UserTypeEnum.values();
 	}
 	
-	public String doLogin() throws Exception {
+	public void doLogin() throws IOException {
 		user = userDao.loginIsValid(user.getUsername(), hashPass(user.getPassword()));
 		if (user != null) {
 			isLogged = true;
@@ -73,28 +97,42 @@ public class LoginController {
 			user = new UserModel();
 		}
 		
-		return "";	
+		PrimeFaces.current().ajax().addCallbackParam("loggedIn", isLogged);
+		ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+		
+		ec.redirect("index.xhtml");
 	}
 	
-	public String doLogout() {
-		return "index?faces-redirect=true";
+	public void doLogout() throws IOException {
+		SessionContext.getInstance().setAttribute("userLogged", null);
+		isLogged = false;
+		isRoot = false;
+		user = new UserModel();
+		
+		ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+		ec.redirect("login.xhtml");
+		
+	    // ec.redirect(((HttpServletRequest) ec.getRequest()).getRequestURI());
+		
 	}
-	
+
 	public String doRegister() {
-		if (user.getFullname().isEmpty() || user.getEmail().isEmpty() ||
-			user.getUsername().isEmpty() || user.getPassword().isEmpty()) {
+		if (this.user.getFullname().isEmpty() || this.user.getEmail().isEmpty() ||
+			this.user.getUsername().isEmpty() || this.user.getPassword().isEmpty()) {
 			
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Aviso!", "Todos os campos devem ser preenchidos!"));
 		} else {
-			user.setPassword(hashPass(user.getPassword()));
-			// user.setStatus(StatusEnum.INACTIVE);
+			this.user.setPassword(hashPass(this.getUser().getPassword()));
+			this.user.setStatus(StatusEnum.INACTIVE);
 			if (user.getId() == null) {
-				userDao.insert(user);
+				this.userDao.insert(user);
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso!", "Seu usuário será liberado por um administrador do sistema. Obrigado!"));
 			} else {
-				userDao.update(user);
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro!", "Erro cadastrar usuário."));
 			}
-			
 		}
+		
+		user = new UserModel();
 		
 		return "";
 	}

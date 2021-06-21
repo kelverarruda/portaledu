@@ -13,5 +13,4 @@
 		<validator-id>portaledu.validators.EmailValidator</validator-id>
 		<validator-class>portaledu.validators.EmailValidator</validator-class>
 	</validator>
-	
 </faces-config>
