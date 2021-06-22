@@ -25,10 +25,8 @@
 	<h:body>
 		<h:form id="menu">
 	        <p:growl id="messages"/>
-	        <p:messages />
-
+	        
 	        <p:menubar> 
-	           
 	        	<p:menuitem value="Home" icon="pi pi-fw pi-home" action="index?faces-redirect=true" />
 	        	<p:menuitem value="Professores" icon="pi pi-fw pi-users" action="professors?faces-redirect=true" />
 	        	<p:menuitem value="Turmas" icon="pi pi-fw pi-sitemap" action="classes?faces-redirect=true" />
@@ -39,43 +37,160 @@
 	            <f:facet name="options">
 	                <p:commandButton value="Logout" icon="pi pi-fw pi-sign-out" styleClass="ui-button-info" action="#{loginBean.doLogout}"/>
 	            </f:facet>
-	            
 	        </p:menubar>
 	    </h:form>
 	    
-	    <h:form>
-		    <div class="card">
-		        <p:dataTable var="professor" value="#{professorBean.professors}">
+	    <h:form id="form-list">
+	     	<p:growl id="msgs" showDetail="true"/>
+	     	
+	     	<div class="card">
+	        	<p:dataTable id="students" var="student" value="#{studentBean.students}" editable="true"
+		                     style="margin-bottom:20px"
+		                     sortBy="#{professor.id}" sortMode="single"
+		                     paginator="true" rows="10"
+		                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                   			 currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} registros"
+                        	 rowsPerPageTemplate="10,20,30,{ShowAll|'Todos'}">
+		
+		            <p:ajax event="rowEdit" listener="#{studentBean.onRowEdit}" update=":form-list:msgs"/>
+		            <p:ajax event="rowEditCancel" listener="#{studentBean.onRowCancel}" update=":form-list:msgs"/>
+		
+		            <p:column sortBy="#{student.id}" sortOrder="asc" headerText="Matrícula">
+		                <p:cellEditor>
+		                    <f:facet name="output">
+		                        <h:outputText value="#{student.id}"/>
+		                    </f:facet>
+		                    <f:facet name="input">
+		                        <p:inputText id="modelInput" value="#{student.id}" style="width:100%" disabled="true"/>
+		                    </f:facet>
+		                </p:cellEditor>
+		            </p:column>
+		
+		            <p:column sortBy="#{student.fullname}" headerText="Nome">
+		                <p:cellEditor>
+		                    <f:facet name="output">
+		                        <h:outputText value="#{student.fullname}"/>
+		                    </f:facet>
+		                    <f:facet name="input">
+		                        <p:inputText value="#{student.fullname}" style="width:100%" label="Nome"/>
+		                    </f:facet>
+		                </p:cellEditor>
+		            </p:column>
 		            
-		            <p:column headerText="Matrícula">
-		                <h:outputText value="#{professor.id}" />
-		            </p:column>
-		
-		            <p:column headerText="Nome">
-		                <h:outputText value="#{professor.fullname}" />
-		            </p:column>
-		
 		            <p:column headerText="CPF">
-		                <h:outputText value="#{professor.document}" />
+		                <p:cellEditor>
+		                    <f:facet name="output">
+		                        <h:outputText value="#{student.document}"/>
+		                    </f:facet>
+		                    <f:facet name="input">
+		                        <p:inputText value="#{student.document}" style="width:100%" label="CPF" disabled="true"/>
+		                    </f:facet>
+		                </p:cellEditor>
 		            </p:column>
-		
+		            
+		            <p:column headerText="Data Nascimento">
+		                <p:cellEditor>
+		                    <f:facet name="output">
+		                        <h:outputText value="#{student.birthdate}">
+		                        	<f:convertDateTime pattern="dd/MM/yyyy"/>
+		                        </h:outputText>
+		                    </f:facet>
+		                    <f:facet name="input">
+		                        <p:datePicker id="inputDate" value="#{student.birthdate}" style="width:100%" disabled="true"/>
+		                    </f:facet>
+		                </p:cellEditor>
+		            </p:column>
+		            
 		            <p:column headerText="Endereço">
-		                <h:outputText value="#{professor.address}" />
+		                <p:cellEditor>
+		                    <f:facet name="output">
+		                        <h:outputText value="#{student.address}"/>
+		                    </f:facet>
+		                    <f:facet name="input">
+		                        <p:inputText value="#{student.address}" style="width:100%" label="Endereço"/>
+		                    </f:facet>
+		                </p:cellEditor>
 		            </p:column>
 		            
 		            <p:column headerText="E-mail">
-		                <h:outputText value="#{professor.email}" />
+		                <p:cellEditor>
+		                    <f:facet name="output">
+		                        <h:outputText value="#{student.email}"/>
+		                    </f:facet>
+		                    <f:facet name="input">
+		                        <p:inputText value="#{student.email}" style="width:100%" label="E-mail" />
+		                    </f:facet>
+		                </p:cellEditor>
 		            </p:column>
 		            
-		            <p:column headerText="Telefone">
-		                <h:outputText value="#{professor.phone}" />
+   		            <p:column headerText="Telefone">
+		                <p:cellEditor>
+		                    <f:facet name="output">
+		                        <h:outputText value="#{student.phone}"/>
+		                    </f:facet>
+		                    <f:facet name="input">
+		                        <p:inputText value="#{student.phone}" style="width:100%" label="Telefone" />
+		                    </f:facet>
+		                </p:cellEditor>
 		            </p:column>
-		            
+		
 		            <p:column headerText="Situação">
-		                <h:outputText value="#{professor.status}" />
+		                <p:cellEditor>
+		                    <f:facet name="output"><h:outputText value="#{student.status.label}"/></f:facet>
+		                    <f:facet name="input">
+		                        <h:selectOneMenu value="#{studentBean.student.status}" style="width:100%">
+		                            <f:selectItems value="#{studentBean.statusE}" var="status"
+		                                           itemLabel="#{status.label}" itemValue="#{status}"/>
+		                        </h:selectOneMenu>
+		                    </f:facet>
+		                </p:cellEditor>
+		            </p:column>
+		
+		            <p:column style="width:6rem">
+		                <p:rowEditor editTitle="Editar" cancelTitle="Cancelar" saveTitle="Salvar"/>
 		            </p:column>
 		        </p:dataTable>
-		    </div>
+	    	</div>
+	    	
+		</h:form>
+		
+		<h:form id="form-cad">
+		
+			<h:inputHidden value="#{studentBean.student.id}" />
+
+			<p:growl id="growl" sticky="false" showDetail="true" />
+			
+			<h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
+
+				<h:outputText value="Nome: " />
+				<p:inputText value="#{studentBean.student.fullname}" label="Nome" validatorMessage="Deu merda!" required="true">
+					<f:validateLength minimum="3"/>
+				</p:inputText>
+
+				<h:outputText value="CPF: " />
+				<p:inputMask mask="999.999.999-99" value="#{studentBean.student.document}" required="true" >
+				</p:inputMask>
+				
+				<h:outputText value="Endereço: " />
+				<p:inputText value="#{studentBean.student.address}" required="true">
+				</p:inputText>
+				
+				<h:outputText value="E-mail: " />
+				<p:inputText value="#{studentBean.student.email}">
+				</p:inputText>
+				
+				<h:outputText value="Telefone: " />
+				<p:inputMask mask="(99) 99999-9999" value="#{studentBean.student.phone}" required="true">
+				</p:inputMask>
+				
+				<h:outputText value="Situação: " />
+				<p:selectOneMenu id="status" value="#{studentBean.student.status}" style="width:100%" effect="fade" required="true" >
+                	<f:selectItems var="status" value="#{studentBean.statusE}" itemLabel="#{status.label}" itemValue="#{status}" />
+            	</p:selectOneMenu>
+
+				<p:commandButton value="Salvar" icon="ui-icon-disk" action="#{studentBean.save}" style="margin-right:20px;" update="form-list form-cad" /> 
+
+			</h:panelGrid>
 		</h:form>
 		
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>

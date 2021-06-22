@@ -19,8 +19,10 @@ import portaledu.utils.StatusesEnum;
 public class ProfessorController {
 	
 	private ProfessorModel professor = new ProfessorModel();
+	
 	@ManagedProperty(value = "#{ProfessorDAO}")
 	private ProfessorDAO professorDao;
+	
 	private List<ProfessorModel> professors = null;
 	
 		

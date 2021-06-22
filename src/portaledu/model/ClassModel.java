@@ -29,10 +29,6 @@ public class ClassModel {
 	@Column(length = 80, nullable = false, unique = true)
 	private String classname;
 	
-	@Column(nullable = false)
-	@DateTimeFormat(pattern = "yyyy")
-	private Date year;
-	
 	@ManyToOne(fetch = FetchType.EAGER)
 	private ProfessorModel professor;
 	
@@ -48,7 +44,6 @@ public class ClassModel {
 	public ClassModel(Long id, String classname, Date year) {
 		this.id = id;
 		this.classname = classname;
-		this.year = year;
 	}
 
 	public Long getId() {
@@ -67,12 +62,20 @@ public class ClassModel {
 		this.classname = classname;
 	}
 
-	public Date getYear() {
-		return year;
+	public ProfessorModel getProfessor() {
+		return professor;
 	}
 
-	public void setYear(Date year) {
-		this.year = year;
+	public void setProfessor(ProfessorModel professor) {
+		this.professor = professor;
+	}
+
+	public List<StudentModel> getStudent() {
+		return student;
+	}
+
+	public void setStudent(List<StudentModel> student) {
+		this.student = student;
 	}
 
 	@Override

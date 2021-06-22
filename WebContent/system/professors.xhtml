@@ -25,8 +25,7 @@
 	<h:body>
 		<h:form id="menu">
 			<p:growl id="messages"/>
-	        <p:messages />
-	        
+				        
 	        <p:menubar>
 	        	<p:menuitem value="Home" icon="pi pi-fw pi-home" action="index?faces-redirect=true" />
 	        	<p:menuitem value="Professores" icon="pi pi-fw pi-users" action="professors?faces-redirect=true" />
@@ -46,12 +45,17 @@
 	     	
 	     	<div class="card">
 	        	<p:dataTable id="professors" var="professor" value="#{professorBean.professors}" editable="true"
-		                     style="margin-bottom:20px">
+		                     style="margin-bottom:20px"
+		                     sortBy="#{professor.id}" sortMode="single"
+		                     paginator="true" rows="10" 
+		                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                   			 currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} registros"
+                        	 rowsPerPageTemplate="10,20,30,{ShowAll|'Todos'}">
 		
 		            <p:ajax event="rowEdit" listener="#{professorBean.onRowEdit}" update=":form-list:msgs"/>
 		            <p:ajax event="rowEditCancel" listener="#{professorBean.onRowCancel}" update=":form-list:msgs"/>
 		
-		            <p:column headerText="Matrícula">
+		            <p:column sortBy="#{professor.id}" sortOrder="asc" headerText="Matrícula">
 		                <p:cellEditor>
 		                    <f:facet name="output">
 		                        <h:outputText value="#{professor.id}"/>
@@ -62,7 +66,7 @@
 		                </p:cellEditor>
 		            </p:column>
 		
-		            <p:column headerText="Nome">
+		            <p:column sortBy="#{professor.fullname}" headerText="Nome">
 		                <p:cellEditor>
 		                    <f:facet name="output">
 		                        <h:outputText value="#{professor.fullname}"/>
@@ -119,7 +123,9 @@
 		
 		            <p:column headerText="Situação">
 		                <p:cellEditor>
-		                    <f:facet name="output"><h:outputText value="#{professor.status.label}"/></f:facet>
+		                    <f:facet name="output">
+		                    	<h:outputText value="#{professor.status.label}"/>
+		                    </f:facet>
 		                    <f:facet name="input">
 		                        <h:selectOneMenu value="#{professorBean.professor.status}" style="width:100%">
 		                            <f:selectItems value="#{professorBean.statusE}" var="status"
@@ -151,19 +157,24 @@
 				</p:inputText>
 
 				<h:outputText value="CPF: " />
-				<p:inputMask mask="999.999.999-99" value="#{professorBean.professor.document}" required="true" >
+					<p:inputMask mask="999.999.999-99" value="#{professorBean.professor.document}" required="true" >
 				</p:inputMask>
 				
+		
+				<h:outputText value="Data Nascimento: " />
+				<p:datePicker pattern="dd/MM/yyyy" value="#{professorBean.professor.birthdate}" monthNavigator="true" showWeek="true" showIcon="true" required="true">
+				</p:datePicker>
+				
 				<h:outputText value="Endereço: " />
-				<p:inputText value="#{professorBean.professor.address}" required="true">
+					<p:inputText value="#{professorBean.professor.address}" required="true">
 				</p:inputText>
 				
 				<h:outputText value="E-mail: " />
-				<p:inputText value="#{professorBean.professor.email}">
+					<p:inputText value="#{professorBean.professor.email}">
 				</p:inputText>
 				
 				<h:outputText value="Telefone: " />
-				<p:inputMask mask="(99) 99999-9999" value="#{professorBean.professor.phone}" required="true">
+					<p:inputMask mask="(99) 99999-9999" value="#{professorBean.professor.phone}" required="true">
 				</p:inputMask>
 				
 				<h:outputText value="Situação: " />

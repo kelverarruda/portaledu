@@ -1,5 +1,6 @@
 package portaledu.model;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +15,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 import portaledu.utils.StatusesEnum;
 
@@ -30,6 +33,10 @@ public class ProfessorModel {
 
 	@Column(length = 11, nullable = false, unique = true)
 	private String document;
+	
+	@Column(nullable = false)
+	@DateTimeFormat(pattern = "dd/MM/yyyy")
+	private Date birthdate;
 	
 	@Column(length = 80, nullable = false)
 	private String address;
@@ -77,6 +84,14 @@ public class ProfessorModel {
 
 	public void setDocument(String document) {
 		this.document = document;
+	}
+
+	public Date getBirthdate() {
+		return birthdate;
+	}
+
+	public void setBirthdate(Date birthdate) {
+		this.birthdate = birthdate;
 	}
 
 	public String getAddress() {

@@ -3,7 +3,6 @@ package portaledu.controller;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
-import java.util.List;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -11,16 +10,9 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.servlet.http.HttpServletRequest;
-
-import org.hibernate.usertype.UserType;
-import org.primefaces.PrimeFaces;
-import org.springframework.dao.support.DaoSupport;
 
 import portaledu.DAO.UserDAO;
-import portaledu.DAO.UserDAOImpl;
 import portaledu.model.UserModel;
-import portaledu.service.UserService;
 import portaledu.utils.SessionContext;
 import portaledu.utils.StatusesEnum;
 import portaledu.utils.UserTypeEnum;

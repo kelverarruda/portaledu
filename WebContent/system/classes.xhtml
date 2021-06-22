@@ -25,7 +25,6 @@
 	<h:body>
 		<h:form id="menu">
 	        <p:growl id="messages"/>
-	        <p:messages />
 
 	        <p:menubar> 
 	        	<p:menuitem value="Home" icon="pi pi-fw pi-home" action="index?faces-redirect=true" />
@@ -41,39 +40,108 @@
 	        </p:menubar>
 	    </h:form>
 	    
-	    <h:form>
-		    <div class="card">
-		        <p:dataTable var="professor" value="#{professorBean.professors}">
-		            
+	    <h:form id="form-list">
+	     	<p:growl id="msgs" showDetail="true"/>
+	     	
+	     	<div class="card">
+	        	<p:dataTable id="classes" var="classe" value="#{classBean.classes}" editable="true"
+		                     style="margin-bottom:20px"
+		                     paginator="true" rows="10" 
+		                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                   			 currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} registros"
+                        	 rowsPerPageTemplate="10,20,30,{ShowAll|'Todos'}">
+		
+		            <p:ajax event="rowEdit" listener="#{classBean.onRowEdit}" update=":form-list:msgs"/>
+		            <p:ajax event="rowEditCancel" listener="#{classBean.onRowCancel}" update=":form-list:msgs"/>
+		
 		            <p:column headerText="Matrícula">
-		                <h:outputText value="#{professor.id}" />
+		                <p:cellEditor>
+		                    <f:facet name="output">
+		                        <h:outputText value="#{classe.id}"/>
+		                    </f:facet>
+		                    <f:facet name="input">
+		                        <p:inputText id="modelInput" value="#{classe.id}" style="width:100%" disabled="true"/>
+		                    </f:facet>
+		                </p:cellEditor>
 		            </p:column>
 		
-		            <p:column headerText="Nome">
-		                <h:outputText value="#{professor.fullname}" />
+		            <p:column headerText="Nome da Turma">
+		                <p:cellEditor>
+		                    <f:facet name="output">
+		                        <h:outputText value="#{classe.classname}"/>
+		                    </f:facet>
+		                    <f:facet name="input">
+		                        <p:inputText value="#{classe.classname}" style="width:100%" label="Nome"/>
+		                    </f:facet>
+		                </p:cellEditor>
 		            </p:column>
 		
-		            <p:column headerText="CPF">
-		                <h:outputText value="#{professor.document}" />
+		            <p:column headerText="Professor">
+		                <p:cellEditor>
+		                    <f:facet name="output">
+		                    	<h:outputText value="#{classe.professor.fullname}"/>
+		                    </f:facet>
+		                    <f:facet name="input">
+		                        <h:selectOneMenu value="#{classBean.classe.professor}" style="width:100%">
+		                            <f:selectItems value="#{classBean.professors}" var="professor"
+		                                           itemLabel="#{professor.fullname}" itemValue="#{professor.id}"/>
+		                        </h:selectOneMenu>
+		                    </f:facet>
+		                </p:cellEditor>
 		            </p:column>
+		            
+		            <!--  
+		            <p:column headerText="Alunos">
+		                <p:cellEditor>
+		                    <f:facet name="output">
+		                    	<h:outputText value="#{classe.student}"/>
+		                    </f:facet>
+		                    <f:facet name="input">
+		                        <h:selectOneMenu value="#{classBean.classe.student}" style="width:100%">
+		                            <f:selectItems value="#{classBean.students}" var="student"
+		                                           itemLabel="#{student.fullname}" itemValue="#{student.id}"/>
+		                        </h:selectOneMenu>
+		                    </f:facet>
+		                </p:cellEditor>
+		            </p:column>
+		            
+		            -->
 		
-		            <p:column headerText="Endereço">
-		                <h:outputText value="#{professor.address}" />
-		            </p:column>
-		            
-		            <p:column headerText="E-mail">
-		                <h:outputText value="#{professor.email}" />
-		            </p:column>
-		            
-		            <p:column headerText="Telefone">
-		                <h:outputText value="#{professor.phone}" />
-		            </p:column>
-		            
-		            <p:column headerText="Situação">
-		                <h:outputText value="#{professor.status}" />
+		            <p:column style="width:6rem">
+		                <p:rowEditor editTitle="Editar" cancelTitle="Cancelar" saveTitle="Salvar"/>
 		            </p:column>
 		        </p:dataTable>
-		    </div>
+	    	</div>
+	    	
+		</h:form>
+		
+		<h:form id="form-cad">
+		
+			<h:inputHidden value="#{classBean.classe.id}" />
+
+			<p:growl id="growl" sticky="false" showDetail="true" />
+			
+			<h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
+
+				<h:outputText value="Nome da Turma: " />
+				<p:inputText value="#{classBean.classe.classname}" required="true">
+					<f:validateLength minimum="3"/>
+				</p:inputText>
+				
+				<h:outputText value="Professor: " />
+				<p:selectOneMenu id="professor" value="#{classBean.classe.professor}" converter="professorConverter" style="width:100%" effect="fade" required="true" filter="true" filterMatchMode="startsWith">
+					<f:selectItem itemLabel="Selecionar" itemValue="#{null}" itemDisabled="true"/>
+                	<f:selectItems var="professor" value="#{classBean.professors}" itemLabel="#{professor.fullname}" itemValue="#{professor}"  />
+            	</p:selectOneMenu>
+				
+				<h:outputText value="Alunos: " />
+				<p:selectManyCheckbox  id="status" value="#{classBean.classe.student}" converter="studentConverter" style="width:100%" layout="grid" columns="6" styleClass="grid-checkbox" required="true" >
+                	<f:selectItems var="student" value="#{classBean.students}" itemLabel="#{student.fullname}" itemValue="#{student}" />
+            	</p:selectManyCheckbox >
+
+				<p:commandButton value="Salvar" icon="ui-icon-disk" action="#{classBean.save}" style="margin-right:20px;" update="form-list form-cad" /> 
+
+			</h:panelGrid>
 		</h:form>
 		
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>

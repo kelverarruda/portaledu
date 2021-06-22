@@ -62,27 +62,25 @@ public class ProfessorDAOImpl implements ProfessorDAO {
 	@Override
 	@Transactional
 	public boolean update(ProfessorModel obj) {
-		try {
+		if (obj != null) {
 			this.sessionFactory.getCurrentSession().update(obj);
-			return true;			
-		} catch (Exception e) {
-			System.out.println(e.toString());
+			return true;
 		}
-		
-		return false;
+		else {
+			return false;
+		}
 	}
 
 	@Override
 	@Transactional
 	public boolean delete(ProfessorModel obj) {
-		try {
+		if (obj != null) {
 			this.sessionFactory.getCurrentSession().delete(obj);
 			return true;
-		} catch (Exception e) {
-			System.out.println(e.toString());
 		}
-		
-		return false;
+		else {
+			return false;
+		}
 	}
-
+	
 }

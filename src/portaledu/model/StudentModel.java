@@ -36,7 +36,7 @@ public class StudentModel {
 	
 	@Column(nullable = false)
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
-	private Date bithdate;
+	private Date birthdate;
 	
 	@Column(length = 80, nullable = true)
 	private String fathername;
@@ -67,21 +67,6 @@ public class StudentModel {
 		
 	}
 
-	public StudentModel(Long id, String fullname, String document, Date bithdate, String fathername, String mothername,
-			String address, String email, String phone, List<ExamModel> exams, StatusesEnum status) {
-		this.id = id;
-		this.fullname = fullname;
-		this.document = document;
-		this.bithdate = bithdate;
-		this.fathername = fathername;
-		this.mothername = mothername;
-		this.address = address;
-		this.email = email;
-		this.phone = phone;
-		this.exams = exams;
-		this.status = status;
-	}
-
 	public Long getId() {
 		return id;
 	}
@@ -106,12 +91,12 @@ public class StudentModel {
 		this.document = document;
 	}
 
-	public Date getBithdate() {
-		return bithdate;
+	public Date getBirthdate() {
+		return birthdate;
 	}
 
-	public void setBithdate(Date bithdate) {
-		this.bithdate = bithdate;
+	public void setBirthdate(Date birthdate) {
+		this.birthdate = birthdate;
 	}
 
 	public String getFathername() {
@@ -160,6 +145,14 @@ public class StudentModel {
 
 	public void setExams(List<ExamModel> exams) {
 		this.exams = exams;
+	}
+
+	public List<ClassModel> getClasses() {
+		return classes;
+	}
+
+	public void setClasses(List<ClassModel> classes) {
+		this.classes = classes;
 	}
 
 	public StatusesEnum getStatus() {

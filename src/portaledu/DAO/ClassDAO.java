@@ -7,8 +7,6 @@ import portaledu.model.ClassModel;
 public interface ClassDAO {
 	
 	List<ClassModel> getAll();
-	List<ClassModel> getActive();
-	List<ClassModel> getInactive();
 	ClassModel getById(int id);
 	boolean insert(ClassModel obj);
 	boolean update(ClassModel obj);

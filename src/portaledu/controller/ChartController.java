@@ -7,6 +7,7 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
+import javax.faces.bean.ViewScoped;
 
 import org.primefaces.model.charts.ChartData;
 import org.primefaces.model.charts.axes.cartesian.CartesianScales;
@@ -44,25 +45,26 @@ public class ChartController {
 	private StudentDAO sDAO;
 	*/
 	
-	private List<ProfessorModel> professors;
-	private List<ProfessorModel> professorsActive;
-	private List<ProfessorModel> professorsInactive;
-	
-	private List<UserModel> users;
-	private List<UserModel> usersActive;
-	private List<UserModel> usersInactive;
-	private List<UserModel> usersBlocked;
-	
 	@ManagedProperty(value="#{ProfessorDAO}")
-	
 	private ProfessorDAO pDAO;
 	
 	@ManagedProperty(value="#{UserDAO}")
 	private UserDAO uDAO;
-
+	
+	private List<ProfessorModel> professors = null;
+	private List<ProfessorModel> professorsActive = null;
+	private List<ProfessorModel> professorsInactive = null;
+	
+	private List<UserModel> users = null;
+	private List<UserModel> usersActive = null;
+	private List<UserModel> usersInactive = null;
+	private List<UserModel> usersBlocked = null;
+	
 	
 	public List<ProfessorModel> getProfessors() {
-		professors = pDAO.getAll();
+		if (professors == null) {
+			professors = pDAO.getAll();
+		}
 		return professors;
 	}
 
@@ -71,7 +73,9 @@ public class ChartController {
 	}
 
 	public List<ProfessorModel> getProfessorsActive() {
-		professorsActive = pDAO.getActive();
+		if (professorsActive == null) {
+			professorsActive = pDAO.getActive();
+		}
 		return professorsActive;
 	}
 
@@ -80,7 +84,9 @@ public class ChartController {
 	}
 
 	public List<ProfessorModel> getProfessorsInactive() {
-		professorsInactive = pDAO.getInactive();
+		if (professorsInactive == null) {
+			professorsInactive = pDAO.getInactive();
+		}
 		return professorsInactive;
 	}
 
@@ -89,7 +95,9 @@ public class ChartController {
 	}
 
 	public List<UserModel> getUsers() {
-		users = uDAO.getAll();
+		if (users == null) {
+			users = uDAO.getAll();
+		}
 		return users;
 	}
 
@@ -98,7 +106,9 @@ public class ChartController {
 	}
 
 	public List<UserModel> getUsersActive() {
-		usersActive = uDAO.getActive();
+		if (usersActive == null) {
+			usersActive = uDAO.getActive();
+		}
 		return usersActive;
 	}
 
@@ -107,7 +117,9 @@ public class ChartController {
 	}
 
 	public List<UserModel> getUsersInactive() {
-		usersInactive = uDAO.getInactive();
+		if (usersInactive == null) {
+			usersInactive = uDAO.getInactive();
+		}
 		return usersInactive;
 	}
 
@@ -116,7 +128,9 @@ public class ChartController {
 	}
 
 	public List<UserModel> getUsersBlocked() {
-		usersBlocked = uDAO.getBlocked();
+		if (usersBlocked == null) {
+			usersBlocked = uDAO.getBlocked();
+		}
 		return usersBlocked;
 	}
 
@@ -188,10 +202,10 @@ public class ChartController {
         barDataSet.setLabel("Usuários");
 
         List<Number> values = new ArrayList<>();
-        values.add(this.users.size());
-        values.add(this.usersInactive.size());
-        values.add(this.usersActive.size());
-        values.add(this.usersBlocked.size());
+        values.add(getUsers().size());
+        values.add(getUsersActive().size());
+        values.add(getUsersInactive().size());
+        values.add(getUsersBlocked().size());
         
         barDataSet.setData(values);
 
@@ -333,13 +347,14 @@ public class ChartController {
 		barProfessor = new BarChartModel();
         ChartData data = new ChartData();
         
+        
         BarChartDataSet barDataSet = new BarChartDataSet();
         barDataSet.setLabel("Professores");
 
         List<Number> values = new ArrayList<>();
-        values.add(this.professors.size());
-        values.add(this.professorsActive.size());
-        values.add(this.professorsInactive.size());
+        values.add(getProfessors().size());
+        values.add(getProfessorsActive().size());
+        values.add(getProfessorsInactive().size());
         
         barDataSet.setData(values);
 

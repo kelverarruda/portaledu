@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import portaledu.model.ProfessorModel;
 import portaledu.model.StudentModel;
 
 @Service(value = "StudentDAO")
@@ -25,49 +26,62 @@ public class StudentDAOImpl implements StudentDAO {
 	@Override
 	@Transactional
 	public List<StudentModel> getAll() {
-		// TODO Auto-generated method stub
-		return null;
+		return (List<StudentModel>) this.sessionFactory.getCurrentSession().createQuery("FROM StudentModel").getResultList();
 	}
 
 	@Override
 	@Transactional
 	public List<StudentModel> getActive() {
-		// TODO Auto-generated method stub
-		return null;
+		return (List<StudentModel>) this.sessionFactory.getCurrentSession().createQuery("FROM StudentModel WHERE status = 'ACTIVE' ").getResultList();
 	}
 
 	@Override
 	@Transactional
 	public List<StudentModel> getInactive() {
-		// TODO Auto-generated method stub
-		return null;
+		return (List<StudentModel>) this.sessionFactory.getCurrentSession().createQuery("FROM StudentModel WHERE status = 'INACTIVE' ").getResultList();
 	}
 
 	@Override
 	@Transactional
 	public StudentModel getById(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		return (StudentModel) this.sessionFactory.getCurrentSession().get(StudentModel.class, new Integer(id));
 	}
 
 	@Override
 	@Transactional
 	public boolean insert(StudentModel obj) {
-		// TODO Auto-generated method stub
-		return false;
+		if (obj != null) {
+			this.sessionFactory.getCurrentSession().save(obj);
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 
 	@Override
 	@Transactional
 	public boolean update(StudentModel obj) {
-		// TODO Auto-generated method stub
+		try {
+			this.sessionFactory.getCurrentSession().update(obj);
+			return true;			
+		} catch (Exception e) {
+			System.out.println(e.toString());
+		}
+		
 		return false;
 	}
 
 	@Override
 	@Transactional
 	public boolean delete(StudentModel obj) {
-		// TODO Auto-generated method stub
+		try {
+			this.sessionFactory.getCurrentSession().delete(obj);
+			return true;
+		} catch (Exception e) {
+			System.out.println(e.toString());
+		}
+		
 		return false;
 	}
 
