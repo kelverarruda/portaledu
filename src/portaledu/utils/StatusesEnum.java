@@ -1,6 +1,6 @@
 package portaledu.utils;
 
-public enum StatusEnum {
+public enum StatusesEnum {
 	
 	ACTIVE("Ativo"), 
 	INACTIVE("Inativo"), 
@@ -8,7 +8,7 @@ public enum StatusEnum {
 	
 	private String label;
 
-	StatusEnum(String label) {
+	StatusesEnum(String label) {
         this.label = label;
     }
 

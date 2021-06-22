@@ -15,7 +15,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import portaledu.utils.StatusEnum;
+import portaledu.utils.StatusesEnum;
 
 @Entity
 @Table(name = "professors")
@@ -48,11 +48,83 @@ public class ProfessorModel {
 	
 	@Column(length = 10, nullable = false, columnDefinition = "VARCHAR(10) DEFAULT 'ACTIVE'")
 	@Enumerated(EnumType.STRING)
-	private StatusEnum status;
+	private StatusesEnum status;
 
 	
 	public ProfessorModel() {
 		
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getFullname() {
+		return fullname;
+	}
+
+	public void setFullname(String fullname) {
+		this.fullname = fullname;
+	}
+
+	public String getDocument() {
+		return document;
+	}
+
+	public void setDocument(String document) {
+		this.document = document;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	public List<ExamModel> getExam() {
+		return exam;
+	}
+
+	public void setExam(List<ExamModel> exam) {
+		this.exam = exam;
+	}
+
+	public List<ClassModel> getClasse() {
+		return classe;
+	}
+
+	public void setClasse(List<ClassModel> classe) {
+		this.classe = classe;
+	}
+
+	public StatusesEnum getStatus() {
+		return status;
+	}
+
+	public void setStatus(StatusesEnum status) {
+		this.status = status;
 	}
 
 	@Override

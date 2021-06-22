@@ -27,8 +27,7 @@
 	        <p:growl id="messages"/>
 	        <p:messages />
 
-	        <p:menubar> 
-	           
+	        <p:menubar>	           
 	        	<p:menuitem value="Home" icon="pi pi-fw pi-home" action="index?faces-redirect=true" />
 	        	<p:menuitem value="Professores" icon="pi pi-fw pi-users" action="professors?faces-redirect=true" />
 	        	<p:menuitem value="Turmas" icon="pi pi-fw pi-sitemap" action="classes?faces-redirect=true" />
@@ -39,43 +38,95 @@
 	            <f:facet name="options">
 	                <p:commandButton value="Logout" icon="pi pi-fw pi-sign-out" styleClass="ui-button-info" action="#{loginBean.doLogout}"/>
 	            </f:facet>
-	            
 	        </p:menubar>
 	    </h:form>
 	    
-	    <h:form>
-		    <div class="card">
-		        <p:dataTable var="professor" value="#{professorBean.professors}">
+	    <h:form id="form">
+	     	<p:growl id="msgs" showDetail="true"/>
+	     	
+	     	<div class="card">
+	        	<p:dataTable id="users" var="user" value="#{userBean.users}" editable="true"
+		                     style="margin-bottom:20px">
+		
+		            <p:ajax event="rowEdit" listener="#{userBean.onRowEdit}" update=":form:msgs"/>
+		            <p:ajax event="rowEditCancel" listener="#{userBean.onRowCancel}" update=":form:msgs"/>
 		            
-		            <p:column headerText="Matrícula">
-		                <h:outputText value="#{professor.id}" />
+		            <h:inputHidden value="#{user.password}" />
+		
+		            <p:column headerText="Código">
+		                <p:cellEditor>
+		                    <f:facet name="output">
+		                        <h:outputText value="#{user.id}"/>
+		                    </f:facet>
+		                    <f:facet name="input">
+		                        <p:inputText id="modelInput" value="#{user.id}" style="width:100%" disabled="true"/>
+		                    </f:facet>
+		                </p:cellEditor>
 		            </p:column>
 		
 		            <p:column headerText="Nome">
-		                <h:outputText value="#{professor.fullname}" />
-		            </p:column>
-		
-		            <p:column headerText="CPF">
-		                <h:outputText value="#{professor.document}" />
-		            </p:column>
-		
-		            <p:column headerText="Endereço">
-		                <h:outputText value="#{professor.address}" />
+		                <p:cellEditor>
+		                    <f:facet name="output">
+		                        <h:outputText value="#{user.fullname}"/>
+		                    </f:facet>
+		                    <f:facet name="input">
+		                        <p:inputText value="#{user.fullname}" style="width:100%" label="Nome"/>
+		                    </f:facet>
+		                </p:cellEditor>
 		            </p:column>
 		            
 		            <p:column headerText="E-mail">
-		                <h:outputText value="#{professor.email}" />
+		                <p:cellEditor>
+		                    <f:facet name="output">
+		                        <h:outputText value="#{user.email}"/>
+		                    </f:facet>
+		                    <f:facet name="input">
+		                        <p:inputText value="#{user.email}" style="width:100%" label="E-mail"/>
+		                    </f:facet>
+		                </p:cellEditor>
 		            </p:column>
 		            
-		            <p:column headerText="Telefone">
-		                <h:outputText value="#{professor.phone}" />
+   		            <p:column headerText="Usuário">
+		                <p:cellEditor>
+		                    <f:facet name="output">
+		                        <h:outputText value="#{user.username}"/>
+		                    </f:facet>
+		                    <f:facet name="input">
+		                        <p:inputText value="#{user.username}" style="width:100%" label="Usuário" disabled="true"/>
+		                    </f:facet>
+		                </p:cellEditor>
 		            </p:column>
 		            
+		            <p:column headerText="Tipo">
+		                <p:cellEditor>
+		                    <f:facet name="output"><h:outputText value="#{user.usertype.label}"/></f:facet>
+		                    <f:facet name="input">
+		                        <h:selectOneMenu value="#{userBean.user.usertype}" style="width:100%">
+		                            <f:selectItems value="#{userBean.userTypes}" var="type"
+		                                           itemLabel="#{type.label}" itemValue="#{type}"/>
+		                        </h:selectOneMenu>
+		                    </f:facet>
+		                </p:cellEditor>
+		            </p:column>
+		
 		            <p:column headerText="Situação">
-		                <h:outputText value="#{professor.status}" />
+		                <p:cellEditor>
+		                    <f:facet name="output"><h:outputText value="#{user.status.label}"/></f:facet>
+		                    <f:facet name="input">
+		                        <h:selectOneMenu value="#{userBean.user.status}" style="width:100%">
+		                            <f:selectItems value="#{userBean.statusE}" var="status"
+		                                           itemLabel="#{status.label}" itemValue="#{status}"/>
+		                        </h:selectOneMenu>
+		                    </f:facet>
+		                </p:cellEditor>
+		            </p:column>
+		
+		            <p:column style="width:6rem">
+		                <p:rowEditor editTitle="Editar" cancelTitle="Cancelar" saveTitle="Salvar"/>
 		            </p:column>
 		        </p:dataTable>
-		    </div>
+	    	</div>
+	    	
 		</h:form>
 		
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>

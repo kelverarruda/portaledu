@@ -24,34 +24,127 @@ import portaledu.DAO.ExamDAO;
 import portaledu.DAO.ProfessorDAO;
 import portaledu.DAO.StudentDAO;
 import portaledu.DAO.UserDAO;
+import portaledu.model.ProfessorModel;
+import portaledu.model.UserModel;
 
 @RequestScoped
 @ManagedBean(name = "chartBean")
 public class ChartController {
 	
-	private BarChartModel barUser;
-	private BarChartModel barStudent;
+	// private BarChartModel barExam;
+	// private BarChartModel barStudent;
 	private BarChartModel barProfessor;
-	private BarChartModel barExam;
+	private BarChartModel barUser;
 	
+	/*
 	@ManagedProperty(value="#{ExamDAO}")
 	private ExamDAO eDAO;
 	
 	@ManagedProperty(value="#{StudentDAO}")
 	private StudentDAO sDAO;
+	*/
+	
+	private List<ProfessorModel> professors;
+	private List<ProfessorModel> professorsActive;
+	private List<ProfessorModel> professorsInactive;
+	
+	private List<UserModel> users;
+	private List<UserModel> usersActive;
+	private List<UserModel> usersInactive;
+	private List<UserModel> usersBlocked;
 	
 	@ManagedProperty(value="#{ProfessorDAO}")
+	
 	private ProfessorDAO pDAO;
 	
 	@ManagedProperty(value="#{UserDAO}")
 	private UserDAO uDAO;
+
 	
-    @PostConstruct
-    public void init() throws Exception {
-    	createBarUser();
+	public List<ProfessorModel> getProfessors() {
+		professors = pDAO.getAll();
+		return professors;
+	}
+
+	public void setProfessors(List<ProfessorModel> professors) {
+		this.professors = professors;
+	}
+
+	public List<ProfessorModel> getProfessorsActive() {
+		professorsActive = pDAO.getActive();
+		return professorsActive;
+	}
+
+	public void setProfessorsActive(List<ProfessorModel> professorsActive) {
+		this.professorsActive = professorsActive;
+	}
+
+	public List<ProfessorModel> getProfessorsInactive() {
+		professorsInactive = pDAO.getInactive();
+		return professorsInactive;
+	}
+
+	public void setProfessorsInactive(List<ProfessorModel> professorsInactive) {
+		this.professorsInactive = professorsInactive;
+	}
+
+	public List<UserModel> getUsers() {
+		users = uDAO.getAll();
+		return users;
+	}
+
+	public void setUsers(List<UserModel> users) {
+		this.users = users;
+	}
+
+	public List<UserModel> getUsersActive() {
+		usersActive = uDAO.getActive();
+		return usersActive;
+	}
+
+	public void setUsersActive(List<UserModel> usersActive) {
+		this.usersActive = usersActive;
+	}
+
+	public List<UserModel> getUsersInactive() {
+		usersInactive = uDAO.getInactive();
+		return usersInactive;
+	}
+
+	public void setUsersInactive(List<UserModel> usersInactive) {
+		this.usersInactive = usersInactive;
+	}
+
+	public List<UserModel> getUsersBlocked() {
+		usersBlocked = uDAO.getBlocked();
+		return usersBlocked;
+	}
+
+	public void setUsersBlocked(List<UserModel> usersBlocked) {
+		this.usersBlocked = usersBlocked;
+	}
+
+	public ProfessorDAO getpDAO() {
+		return pDAO;
+	}
+
+	public void setpDAO(ProfessorDAO pDAO) {
+		this.pDAO = pDAO;
+	}
+
+	public UserDAO getuDAO() {
+		return uDAO;
+	}
+
+	public void setuDAO(UserDAO uDAO) {
+		this.uDAO = uDAO;
+	}
+
+	public ChartController() throws Exception {
+    	// createBarExam();
+    	// createBarStudent();
     	createBarProfessor();
-    	createBarStudent();
-    	createBarExam();
+    	createBarUser();    	
     }
     
 	public BarChartModel getBarUser() {
@@ -61,7 +154,7 @@ public class ChartController {
 	public void setBarUser(BarChartModel barUser) {
 		this.barUser = barUser;
 	}
-
+/*
 	public BarChartModel getBarStudent() {
 		return barStudent;
 	}
@@ -69,7 +162,7 @@ public class ChartController {
 	public void setBarStudent(BarChartModel barStudent) {
 		this.barStudent = barStudent;
 	}
-
+*/
 	public BarChartModel getBarProfessor() {
 		return barProfessor;
 	}
@@ -77,7 +170,7 @@ public class ChartController {
 	public void setBarProfessor(BarChartModel barProfessor) {
 		this.barProfessor = barProfessor;
 	}
-
+/*
 	public BarChartModel getBarExam() {
 		return barExam;
 	}
@@ -85,7 +178,7 @@ public class ChartController {
 	public void setBarExam(BarChartModel barExam) {
 		this.barExam = barExam;
 	}
-
+*/
 	public void createBarUser() throws Exception {
 		
 		barUser = new BarChartModel();
@@ -95,10 +188,10 @@ public class ChartController {
         barDataSet.setLabel("Usuários");
 
         List<Number> values = new ArrayList<>();
-        values.add(uDAO.getAll().size());
-        values.add(uDAO.getInactive().size());
-        values.add(uDAO.getActive().size());
-        values.add(uDAO.getBlocked().size());
+        values.add(this.users.size());
+        values.add(this.usersInactive.size());
+        values.add(this.usersActive.size());
+        values.add(this.usersBlocked.size());
         
         barDataSet.setData(values);
 
@@ -161,7 +254,7 @@ public class ChartController {
         barUser.setOptions(options);
         
     }
-	
+/*	
 	public void createBarStudent() throws Exception {
 		
 		barStudent = new BarChartModel();
@@ -233,6 +326,7 @@ public class ChartController {
         barStudent.setOptions(options);
         
     }
+*/
 	
 	public void createBarProfessor() throws Exception {
 		
@@ -243,9 +337,9 @@ public class ChartController {
         barDataSet.setLabel("Professores");
 
         List<Number> values = new ArrayList<>();
-        values.add(pDAO.getAll().size());
-        values.add(pDAO.getInactive().size());
-        values.add(pDAO.getActive().size());
+        values.add(this.professors.size());
+        values.add(this.professorsActive.size());
+        values.add(this.professorsInactive.size());
         
         barDataSet.setData(values);
 
@@ -305,7 +399,8 @@ public class ChartController {
         barProfessor.setOptions(options);
         
     }
-	
+
+/*
 	public void createBarExam() throws Exception {
 		
 		barExam = new BarChartModel();
@@ -377,5 +472,6 @@ public class ChartController {
         barExam.setOptions(options);
         
     }
-    
+*/
+	
 }

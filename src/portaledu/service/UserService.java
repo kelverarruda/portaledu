@@ -7,7 +7,7 @@ import javax.faces.bean.ApplicationScoped;
 
 import portaledu.DAO.UserDAOImpl;
 import portaledu.model.UserModel;
-import portaledu.utils.StatusEnum;
+import portaledu.utils.StatusesEnum;
 import portaledu.utils.UserTypeEnum;
 
 @ApplicationScoped
@@ -44,7 +44,7 @@ public class UserService {
 		user.setUsername("admin");
 		user.setPassword(hashPass("admin"));
 		user.setUsertype(UserTypeEnum.ADMIN);
-		user.setStatus(StatusEnum.ACTIVE);
+		user.setStatus(StatusesEnum.ACTIVE);
 		dao.insert(user);
 	}
 

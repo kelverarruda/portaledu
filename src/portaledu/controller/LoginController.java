@@ -22,7 +22,7 @@ import portaledu.DAO.UserDAOImpl;
 import portaledu.model.UserModel;
 import portaledu.service.UserService;
 import portaledu.utils.SessionContext;
-import portaledu.utils.StatusEnum;
+import portaledu.utils.StatusesEnum;
 import portaledu.utils.UserTypeEnum;
 
 @RequestScoped
@@ -37,10 +37,11 @@ public class LoginController {
 	private boolean isLogged = false;
 	private boolean isRoot = false;
 	
-	public LoginController() {
+	public LoginController() throws IOException {
 		UserModel user = (UserModel) SessionContext.getInstance().getAttribute("userLogged");
 			if (user != null) {
 				isLogged = true;
+				
 				if (user.getUsertype() == UserTypeEnum.ADMIN) {
 					isRoot = true;
 				}
@@ -48,6 +49,7 @@ public class LoginController {
 					isRoot = false;
 				}
 			}
+			
 		}
 	
 	public UserModel getUser() {
@@ -87,28 +89,53 @@ public class LoginController {
 	}
 	
 	public void doLogin() throws IOException {
-		user = userDao.loginIsValid(user.getUsername(), hashPass(user.getPassword()));
-		if (user != null) {
-			isLogged = true;
-			SessionContext.getInstance().setAttribute("userLogged", user);
+		
+		if (user.getUsername().isEmpty() || user.getPassword().isEmpty()) {
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Aviso!", "Usuário ou senha não informados."));
+			return;
 		} else {
-			isLogged = false;
-			SessionContext.getInstance().setAttribute("userLogged", null);
-			user = new UserModel();
+			user = userDao.loginIsValid(user.getUsername(), hashPass(user.getPassword()));
+			if (user == null) {
+				isLogged = false;
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro!", "Usuário ou senha inválidos."));
+				return;
+			} else if (user != null && user.getStatus() == StatusesEnum.ACTIVE) {
+				isLogged = true;
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Login OK!", "Bem vindo, " + this.user.getFullname()));
+				SessionContext.getInstance().setAttribute("userLogged", user);
+			} else if (user.getStatus() == StatusesEnum.BLOCKED) {
+				isLogged = false;
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro!", "Usuário está bloqueado. Por favor, entre em contato."));
+				return;
+			} else if (user.getStatus() == StatusesEnum.INACTIVE) {
+				isLogged = false;
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Aviso!", "Usuário está inativo. Por favor, entre em contato."));
+				return;
+			} else {
+				isLogged = false;
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro Desconhecido!", "Entre em contato com o administrador."));
+				return;
+			}
 		}
 		
-		PrimeFaces.current().ajax().addCallbackParam("loggedIn", isLogged);
+		// PrimeFaces.current().ajax().addCallbackParam("loggedIn", isLogged);
 		ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
 		
 		ec.redirect("index.xhtml");
+		
 	}
 	
 	public void doLogout() throws IOException {
+		
+		FacesMessage message = null;
+		
+		message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Logout!","");
 		SessionContext.getInstance().setAttribute("userLogged", null);
 		isLogged = false;
 		isRoot = false;
 		user = new UserModel();
 		
+		FacesContext.getCurrentInstance().addMessage(null, message);
 		ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
 		ec.redirect("login.xhtml");
 		
@@ -116,25 +143,27 @@ public class LoginController {
 		
 	}
 
-	public String doRegister() {
+	public void doRegister() {
+		
 		if (this.user.getFullname().isEmpty() || this.user.getEmail().isEmpty() ||
 			this.user.getUsername().isEmpty() || this.user.getPassword().isEmpty()) {
-			
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Aviso!", "Todos os campos devem ser preenchidos!"));
+			return;
 		} else {
 			this.user.setPassword(hashPass(this.getUser().getPassword()));
-			this.user.setStatus(StatusEnum.INACTIVE);
+			this.user.setStatus(StatusesEnum.INACTIVE);
+			
 			if (user.getId() == null) {
 				this.userDao.insert(user);
 				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso!", "Seu usuário será liberado por um administrador do sistema. Obrigado!"));
 			} else {
 				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro!", "Erro cadastrar usuário."));
+				return;
 			}
 		}
 		
 		user = new UserModel();
 		
-		return "";
 	}
 	
 	public String hashPass(String pass) {

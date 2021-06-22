@@ -22,14 +22,14 @@
 
 <h:body class="text-center">
 
-  	<h:form class="form-signin" id="login">
+  	<h:form class="form-signin" id="form-signin">
   	
-  		<p:growl id="growl" showDetail="true" />
+  		<p:growl id="growl" showDetail="true" life="5000" />
   		
   		<h:graphicImage class="mb-4" library="img" name="logo.png" alt="logo" height="150" />
 
     	<div class="form-floating">
-      		<h:inputText class="form-control" id="floatingInput" placeholder="Usuário" value="#{loginBean.user.username}"/>
+      		<h:inputText class="form-control" id="floatingInput" placeholder="Usuário" value="#{loginBean.user.username}" />
       		<label for="floatingInput">Usuário</label>
     	</div>
     	
@@ -38,7 +38,7 @@
 	      	<label for="floatingPassword">Senha</label>
     	</div>
     
-    	<h:commandButton class="w-100 btn btn-lg btn-primary mt-4" type="submit" action="#{loginBean.doLogin}" value="Entrar" />
+    	<p:commandButton class="w-100 btn btn-lg btn-primary mt-4" type="submit" action="#{loginBean.doLogin}" value="Entrar" update="form-signin" />
     	
     	<p class="mt-5 mb-1 text-dark"> Não possui cadastro?</p>
     	<h:commandButton class="w-100 mb-5 btn btn-lg btn-link" value="Cadastrar-se" action="register?faces-redirect=true" />

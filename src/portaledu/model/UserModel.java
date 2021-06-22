@@ -9,7 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import portaledu.utils.StatusEnum;
+import portaledu.utils.StatusesEnum;
 import portaledu.utils.UserTypeEnum;
 
 @Entity
@@ -38,7 +38,7 @@ public class UserModel {
 	
 	@Column(length = 10, nullable = true)
 	@Enumerated(EnumType.STRING)
-	private StatusEnum status;
+	private StatusesEnum status;
 	
 
 	public UserModel() {
@@ -93,11 +93,11 @@ public class UserModel {
 		this.usertype = usertype;
 	}
 
-	public StatusEnum getStatus() {
+	public StatusesEnum getStatus() {
 		return status;
 	}
 
-	public void setStatus(StatusEnum status) {
+	public void setStatus(StatusesEnum status) {
 		this.status = status;
 	}
 

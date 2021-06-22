@@ -4,94 +4,66 @@ import java.util.List;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.view.ViewScoped;
 
-import org.primefaces.PrimeFaces;
+import org.primefaces.event.CellEditEvent;
+import org.primefaces.event.RowEditEvent;
 
-import portaledu.DAO.UserDAOImpl;
+import portaledu.DAO.UserDAO;
 import portaledu.model.UserModel;
+import portaledu.utils.StatusesEnum;
+import portaledu.utils.UserTypeEnum;
 
 @RequestScoped
 @ManagedBean(name = "userBean")
 public class UserController {
-		
-	private UserDAOImpl DAO = new UserDAOImpl();
-	private UserModel selectedUser;
-	private List<UserModel> list;
-	private List<UserModel> selectedList;
 	
-	public UserModel getSelectedUser() {
-		return selectedUser;
+	private UserModel user = new UserModel();
+	
+	@ManagedProperty(value="#{UserDAO}")
+	private UserDAO userDao;
+	private List<UserModel> users;
+	
+	public UserDAO getUserDao() {
+		return userDao;
+	}
+	public void setUserDao(UserDAO userDao) {
+		this.userDao = userDao;
+	}
+	public List<UserModel> getUsers() {
+		users = userDao.getAll();
+		return users;
+	}
+	public void setUsers(List<UserModel> users) {
+		this.users = users;
 	}
 	
-    public void setSelectedUser(UserModel user) {
-        this.selectedUser = user;
-    }
-    
-	public List<UserModel> getList() {
-		list = DAO.getAll();
-		return list;
+	public UserModel getUser() {
+		return user;
+	}
+	public void setUser(UserModel user) {
+		this.user = user;
+	}
+	public UserTypeEnum[] getUserTypes() {
+		return UserTypeEnum.values();
 	}
 	
-    public void setList(List<UserModel> list) {
-		this.list = list;
+	public StatusesEnum[] getStatusE() {
+		return StatusesEnum.values();
 	}
-
-	public List<UserModel> getSelectedUsers() {
-        return selectedList;
+	
+	public void onRowEdit(RowEditEvent<UserModel> event) {
+		userDao.update(event.getObject());
+        FacesMessage msg = new FacesMessage("Atualizado!", "O usuário " + event.getObject().getUsername() + " foi atualizado." );
+        FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 
-    public void setSelectedUsers(List<UserModel> selUsers) {
-        this.selectedList = selUsers;
-    }
-
-    public void openNew() {
-        this.selectedUser = new UserModel();
-    }
-
-    public void saveUser() {
-    	if (this.selectedUser.getId() == null) {
-    		DAO.insert(this.selectedUser);
-    		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Usuário cadastrado!"));
-    	} else if (this.selectedUser.getId() != null){
-    		DAO.update(this.selectedUser);
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Usuário atualizado!"));
-        }
+    public void onRowCancel(RowEditEvent<UserModel> event) {
     	
-        PrimeFaces.current().executeScript("PF('manageUserDialog').hide()");
-        PrimeFaces.current().ajax().update("form:messages", "form:dt-users");
+        FacesMessage msg = new FacesMessage("Atualização cancelada!", "");
+        FacesContext.getCurrentInstance().addMessage(null, msg);
     }
-
-    public void deleteUser() {
-    	DAO.delete(this.selectedUser);
-        this.selectedUser = null;
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Usuário excluído!"));
-        PrimeFaces.current().ajax().update("form:messages", "form:dt-users");
-    }
-
-    public String getDeleteButtonMessage() {
-        if (hasSelectedUsers()) {
-            int size = this.selectedList.size();
-            return size > 1 ? size + " Usuários selecionados" : "1 Usuário selecionado";
-        }
-
-        return "Excluir";
-    }
-
-    public boolean hasSelectedUsers() {
-        return this.selectedList != null && !this.selectedList.isEmpty();
-    }
-
-    public void deleteSelectedUsers() {
-        this.list.removeAll(this.selectedList);
-        this.selectedList = null;
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Usuários excluídos!"));
-        PrimeFaces.current().ajax().update("form:messages", "form:dt-users");
-        PrimeFaces.current().executeScript("PF('dtUsers').clearFilters()");
-    }
-
-
-
+	
 }

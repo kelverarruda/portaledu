@@ -21,7 +21,7 @@ import javax.persistence.Table;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import portaledu.utils.StatusEnum;
+import portaledu.utils.StatusesEnum;
 
 @Entity
 @Table(name = "exams")
@@ -51,14 +51,14 @@ public class ExamModel {
 	
 	@Column(length = 10, nullable = false, columnDefinition = "VARCHAR(10) DEFAULT 'ACTIVE'")
 	@Enumerated(EnumType.STRING)
-	private StatusEnum status;
+	private StatusesEnum status;
 
 	public ExamModel() {
 		
 	}
 	
 	public ExamModel(Long id, List<ProfessorModel> professor, StudentModel student, Date date, String subject,
-			Double result, StatusEnum status) {
+			Double result, StatusesEnum status) {
 		this.id = id;
 		this.professor = professor;
 		this.student = student;
@@ -117,11 +117,11 @@ public class ExamModel {
 		this.result = result;
 	}
 
-	public StatusEnum getStatus() {
+	public StatusesEnum getStatus() {
 		return status;
 	}
 
-	public void setStatus(StatusEnum status) {
+	public void setStatus(StatusesEnum status) {
 		this.status = status;
 	}
 

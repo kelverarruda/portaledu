@@ -7,12 +7,12 @@ import javax.faces.context.FacesContext;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import portaledu.model.UserModel;
-import portaledu.utils.StatusEnum;
 
 @Service(value = "UserDAO")
 public class UserDAOImpl implements UserDAO {
@@ -95,31 +95,14 @@ public class UserDAOImpl implements UserDAO {
 	@Override
 	@Transactional
 	public UserModel loginIsValid(String user, String pass) {
-		if (user.isEmpty() || pass.isEmpty()) {
-			addMessage(FacesMessage.SEVERITY_WARN, "Aviso!", "Usuário ou senha não informados.");
-			return null;
-		} else {
-			try {
-				Session session = sessionFactory.getCurrentSession();
-				UserModel u = (UserModel) session.createQuery("FROM UserModel WHERE username = :user AND password = :pass")
-						.setParameter("user", user)
-						.setParameter("pass", pass)
-						.uniqueResult();
-				
-				if (u != null && u.getStatus() == StatusEnum.ACTIVE) {
-					return u;
-				} else if (u.getStatus() == StatusEnum.BLOCKED) {
-					addMessage(FacesMessage.SEVERITY_ERROR, "Erro!", "Usuário está bloqueado. Por favor, entre em contato.");
-				} else if (u.getStatus() == StatusEnum.INACTIVE) {
-					addMessage(FacesMessage.SEVERITY_INFO, "Informação", "Usuário está inativo. Por favor, entre em contato.");
-				} else {
-					addMessage(FacesMessage.SEVERITY_ERROR, "Erro!", "Usuário ou senha inválidos.");
-				}
-			} catch (Exception e) {
-				System.out.println(e.toString());
-			}
-		}
-		return null;
+		Session session = sessionFactory.getCurrentSession();
+		UserModel u = null;
+		u = (UserModel) session.createQuery("FROM UserModel WHERE username = :user AND password = :pass")
+				.setParameter("user", user)
+				.setParameter("pass", pass)
+				.uniqueResult();
+		
+		return u;
 	}
 
 	@Override

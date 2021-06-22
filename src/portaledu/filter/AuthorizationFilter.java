@@ -30,15 +30,16 @@ public class AuthorizationFilter implements Filter {
 		HttpSession sess = ((HttpServletRequest) request).getSession(false);
 
 		if (sess != null) {
-			user = (UserModel) sess.getAttribute("usuarioLogado");
+			user = (UserModel) sess.getAttribute("userLogged");
 		}
 
 		HttpServletRequest rqt = (HttpServletRequest) request;
 //		if (user == null && (rqt.getRequestURI().indexOf("views/Index.xhtml") <= 0
 //				         && rqt.getRequestURI().indexOf("login.xhtml") <= 0)) {
+		
+			//	 && (rqt.getRequestURI().indexOf("users.xhtml") <= 0)) {
 	
-			if (user == null && (rqt.getRequestURI().indexOf("login.xhtml") <= 0) 
-							 && (rqt.getRequestURI().indexOf("Usuario.xhtml") <= 0)) {	
+			if (user == null && (rqt.getRequestURI().indexOf("login.xhtml") <= 0)) {	
 			String contextPath = rqt.getContextPath();
 
 			((HttpServletResponse) response).sendRedirect(contextPath + "/system/login.xhtml");

@@ -66,10 +66,7 @@
   	
  	<welcome-file-list>
 		<welcome-file>system/login.xhtml</welcome-file>
-		<welcome-file>login.xhtml</welcome-file>
-		<welcome-file>index.xhtml</welcome-file>
 	</welcome-file-list>
-
 	
 	<!--  configuração para o filtro de login -->
 	<filter>
@@ -77,14 +74,15 @@
 	    <filter-class>portaledu.filter.AuthorizationFilter</filter-class>    
 	</filter>
 	
+	<!---->
 	<filter-mapping>
 	    <filter-name>LoginFilter</filter-name>
+	    <url-pattern>/system/users.xhtml</url-pattern>
+	    <url-pattern>/system/index.xhtml</url-pattern>  
 	    <url-pattern>/system/classes.xhtml</url-pattern>
 	    <url-pattern>/system/exams.xhtml</url-pattern>
-	    <url-pattern>/system/index.xhtml</url-pattern>
 	    <url-pattern>/system/professors.xhtml</url-pattern>
 	    <url-pattern>/system/students.xhtml</url-pattern>
-	    <url-pattern>/system/users.xhtml</url-pattern>
 	</filter-mapping>
 	
 </web-app>
