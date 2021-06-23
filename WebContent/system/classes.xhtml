@@ -13,6 +13,7 @@
 	
 	<title>Portal EDU | Turmas</title>
 	
+	<link rel="shortcut icon" type="image/x-icon" href="#{resource['img/favicon.ico']}"/>
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous" />
 	
 	<style>
@@ -71,7 +72,7 @@
 		                        <h:outputText value="#{classe.classname}"/>
 		                    </f:facet>
 		                    <f:facet name="input">
-		                        <p:inputText value="#{classe.classname}" style="width:100%" label="Nome"/>
+		                        <p:inputText value="#{classe.classname}" style="width:100%" label="Nome" disabled="true"/>
 		                    </f:facet>
 		                </p:cellEditor>
 		            </p:column>
@@ -90,7 +91,7 @@
 		                </p:cellEditor>
 		            </p:column>
 		            
-		            <!--  
+		            
 		            <p:column headerText="Alunos">
 		                <p:cellEditor>
 		                    <f:facet name="output">
@@ -104,16 +105,14 @@
 		                    </f:facet>
 		                </p:cellEditor>
 		            </p:column>
-		            
-		            -->
-		
+	
 		            <p:column style="width:6rem">
 		                <p:rowEditor editTitle="Editar" cancelTitle="Cancelar" saveTitle="Salvar"/>
 		            </p:column>
 		        </p:dataTable>
 	    	</div>
 	    	
-		</h:form>
+		</h:form>		
 		
 		<h:form id="form-cad">
 		

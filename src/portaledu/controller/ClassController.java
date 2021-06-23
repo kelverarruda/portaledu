@@ -7,8 +7,10 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
+import javax.swing.tree.TreeNode;
 
 import org.primefaces.event.RowEditEvent;
+import org.primefaces.model.DefaultTreeNode;
 
 import portaledu.DAO.ClassDAO;
 import portaledu.DAO.ProfessorDAO;
@@ -35,8 +37,7 @@ public class ClassController {
 	private List<ClassModel> classes = null;
 	private List<ProfessorModel> professors = null;
 	private List<StudentModel> students = null;
-	
-	
+
 	public ClassModel getClasse() {
 		return classe;
 	}
