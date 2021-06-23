@@ -6,7 +6,7 @@ import javax.faces.convert.FacesConverter;
 
 import portaledu.model.ExamModel;
 
-@FacesConverter(value = "classeConverter", forClass = ExamModel.class)
+@FacesConverter(value = "examConverter", forClass = ExamModel.class)
 public class ExamConverter implements javax.faces.convert.Converter{
 	
 	@Override
