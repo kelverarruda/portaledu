@@ -47,8 +47,13 @@
     	</div>
     	
     	<div class="form-floating mt-1">
-      		<h:inputSecret class="form-control" id="password" placeholder="Senha" value="#{loginBean.user.password}" />
-      		<label for="password">Senha</label>
+      		<p:password id="password" class="form-control" value="#{loginBean.user.password}" match="password2" />
+      		<label for="password">Senha*</label>
+    	</div>
+    	
+    	<div class="form-floating mt-1">
+      		<p:password id="password2" class="form-control" value="#{loginBean.user.password}" />
+      		<label for="password">Confirmar Senha*</label>
     	</div>
     	
     	<div class="form-floating mt-1">
