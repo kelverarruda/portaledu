@@ -23,18 +23,21 @@ public class UserController {
 	
 	@ManagedProperty(value="#{UserDAO}")
 	private UserDAO userDao;
-	private List<UserModel> users;
+	private List<UserModel> users = null;
 	
 	public UserDAO getUserDao() {
 		return userDao;
 	}
+	
 	public void setUserDao(UserDAO userDao) {
 		this.userDao = userDao;
 	}
+	
 	public List<UserModel> getUsers() {
 		users = userDao.getAll();
 		return users;
 	}
+	
 	public void setUsers(List<UserModel> users) {
 		this.users = users;
 	}
@@ -42,9 +45,11 @@ public class UserController {
 	public UserModel getUser() {
 		return user;
 	}
+	
 	public void setUser(UserModel user) {
 		this.user = user;
 	}
+	
 	public UserTypeEnum[] getUserTypes() {
 		return UserTypeEnum.values();
 	}

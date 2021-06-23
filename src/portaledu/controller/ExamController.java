@@ -33,8 +33,8 @@ public class ExamController {
 	@ManagedProperty(value = "#{StudentDAO}")
 	private StudentDAO studentDao;
 	
-	private List<ExamModel> exams;
-	private List<StudentModel> students;
+	private List<ExamModel> exams = null;
+	private List<StudentModel> students = null;
 	
 	
 	public StatusesEnum[] getStatusE() {
