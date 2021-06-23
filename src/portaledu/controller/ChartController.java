@@ -32,18 +32,16 @@ import portaledu.model.UserModel;
 @ManagedBean(name = "chartBean")
 public class ChartController {
 	
-	// private BarChartModel barExam;
-	// private BarChartModel barStudent;
+	private BarChartModel barExam;
+	private BarChartModel barStudent;
 	private BarChartModel barProfessor;
 	private BarChartModel barUser;
 	
-	/*
 	@ManagedProperty(value="#{ExamDAO}")
 	private ExamDAO eDAO;
 	
 	@ManagedProperty(value="#{StudentDAO}")
 	private StudentDAO sDAO;
-	*/
 	
 	@ManagedProperty(value="#{ProfessorDAO}")
 	private ProfessorDAO pDAO;
@@ -133,6 +131,22 @@ public class ChartController {
 		}
 		return usersBlocked;
 	}
+	
+	public ExamDAO geteDAO() {
+		return eDAO;
+	}
+
+	public void seteDAO(ExamDAO eDAO) {
+		this.eDAO = eDAO;
+	}
+
+	public StudentDAO getsDAO() {
+		return sDAO;
+	}
+
+	public void setsDAO(StudentDAO sDAO) {
+		this.sDAO = sDAO;
+	}
 
 	public void setUsersBlocked(List<UserModel> usersBlocked) {
 		this.usersBlocked = usersBlocked;
@@ -153,46 +167,43 @@ public class ChartController {
 	public void setuDAO(UserDAO uDAO) {
 		this.uDAO = uDAO;
 	}
-
-	public ChartController() throws Exception {
-    	// createBarExam();
-    	// createBarStudent();
-    	createBarProfessor();
-    	createBarUser();    	
-    }
     
-	public BarChartModel getBarUser() {
+	public BarChartModel getBarUser() throws Exception {
+		createBarUser();
 		return barUser;
 	}
 
 	public void setBarUser(BarChartModel barUser) {
 		this.barUser = barUser;
 	}
-/*
-	public BarChartModel getBarStudent() {
+
+	public BarChartModel getBarStudent() throws Exception {
+		createBarStudent();
 		return barStudent;
 	}
 
 	public void setBarStudent(BarChartModel barStudent) {
 		this.barStudent = barStudent;
 	}
-*/
-	public BarChartModel getBarProfessor() {
+
+	public BarChartModel getBarProfessor() throws Exception {
+		createBarProfessor();
 		return barProfessor;
 	}
 
 	public void setBarProfessor(BarChartModel barProfessor) {
 		this.barProfessor = barProfessor;
 	}
-/*
-	public BarChartModel getBarExam() {
+
+	public BarChartModel getBarExam() throws Exception {
+		createBarExam();
 		return barExam;
 	}
 
 	public void setBarExam(BarChartModel barExam) {
 		this.barExam = barExam;
 	}
-*/
+	
 	public void createBarUser() throws Exception {
 		
 		barUser = new BarChartModel();
@@ -262,13 +273,13 @@ public class ChartController {
 
         // disable animation
         Animation animation = new Animation();
-        animation.setDuration(0);
+        animation.setDuration(1000);
         options.setAnimation(animation);
 
         barUser.setOptions(options);
         
     }
-/*	
+	
 	public void createBarStudent() throws Exception {
 		
 		barStudent = new BarChartModel();
@@ -279,8 +290,8 @@ public class ChartController {
 
         List<Number> values = new ArrayList<>();
         values.add(sDAO.getAll().size());
-        values.add(sDAO.getInactive().size());
         values.add(sDAO.getActive().size());
+        values.add(sDAO.getInactive().size());
         
         barDataSet.setData(values);
 
@@ -334,13 +345,12 @@ public class ChartController {
 
         // disable animation
         Animation animation = new Animation();
-        animation.setDuration(0);
+        animation.setDuration(1000);
         options.setAnimation(animation);
 
         barStudent.setOptions(options);
         
     }
-*/
 	
 	public void createBarProfessor() throws Exception {
 		
@@ -408,14 +418,14 @@ public class ChartController {
 
         // disable animation
         Animation animation = new Animation();
-        animation.setDuration(0);
+        animation.setDuration(1000);
         options.setAnimation(animation);
 
         barProfessor.setOptions(options);
         
     }
 
-/*
+
 	public void createBarExam() throws Exception {
 		
 		barExam = new BarChartModel();
@@ -481,12 +491,11 @@ public class ChartController {
 
         // disable animation
         Animation animation = new Animation();
-        animation.setDuration(0);
+        animation.setDuration(1000);
         options.setAnimation(animation);
 
         barExam.setOptions(options);
         
     }
-*/
 	
 }
